@@ -102,6 +102,39 @@ html, body {
     background-color: var(--background-color);
 }
 
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
+
+.portal-wrapper {
+    height: 100dvh;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "nav header" "nav main" "nav footer";
+    padding: 1rem;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    height: 100dvh;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+
+.sidebar {
+    background: var(--sidebar-background-color);
+    height: 100%;
+    border-radius: 1rem;
+    width: 300px;
+}
+
 nav {
     grid-area: nav;
     background-color: var(--nav-background-color);
