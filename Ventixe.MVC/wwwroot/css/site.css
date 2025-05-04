@@ -91,3 +91,83 @@
     --checkbox-checked-border-color: var(--primary-100);
     --checkbox-checked-text-color: var(--gray-10);
 }
+
+html, body {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: var(--font);
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+nav {
+    grid-area: nav;
+    background-color: var(--nav-background-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+header {
+    grid-area: header;
+    background-color: var(--header-background-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+main {
+    grid-area: main;
+    background-color: var(--main-background-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+footer {
+    grid-area: footer;
+    background-color: var(--footer-background-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--headline-color);
+    font-family: var(--font);
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 26px;
+}
+
+h4 {
+    font-size: 24px;
+}
+
+h5 {
+    font-size: 22px;
+}
+
+h6 {
+    font-size: 20px;
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--link-hover-color);
+        text-decoration: underline;
+    }
