@@ -135,12 +135,43 @@ html, body {
     width: 300px;
 }
 
+.logotype {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-color);
+    text-decoration: none;
+    margin: 2rem;
+}
+
+    .logotype:hover {
+        text-decoration: none;
+    }
+
 nav {
     grid-area: nav;
     background-color: var(--nav-background-color);
     border-radius: 1rem;
     padding: 1.5rem;
 }
+
+.nav-links {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    height: 60vh;
+}
+
+.nav-link {
+    padding: 1.2rem 2rem;
+    color: var(--navlink-color);
+}
+
+    .nav-link.active {
+        color: var(--navlink-active-color);
+    }
 
 header {
     grid-area: header;
@@ -162,6 +193,24 @@ footer {
     border-radius: 1rem;
     padding: 1.5rem;
 }
+
+.additional-info {
+    padding: 0 1rem;
+    font-size: 0.9em;
+    color: var(--text-muted-color);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+    .additional-info.center {
+        justify-content: center;
+    }
+
+    .additional-info.right {
+        justify-content: flex-end;
+    }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
