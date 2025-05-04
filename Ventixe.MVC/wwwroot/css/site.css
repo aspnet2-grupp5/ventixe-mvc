@@ -194,6 +194,25 @@ footer {
     padding: 1.5rem;
 }
 
+.card {
+    background-color: var(--card-background-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 100%;
+}
+
+    .card .card-header {
+        padding: 1rem 2rem 1.5rem;
+    }
+
+    .card .card-body {
+        padding: 1rem 2rem;
+    }
+
+    .card .card-footer {
+        padding: 2rem 2rem 1rem;
+    }
+
 .additional-info {
     padding: 0 1rem;
     font-size: 0.9em;
