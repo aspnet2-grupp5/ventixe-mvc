@@ -205,6 +205,40 @@ a {
         text-decoration: underline;
     }
 
+.btn {
+    color: var(--button-text-color);
+    border: 1px solid var(--button-border-color);
+    background-color: var(--button-background-color);
+    transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+    border-radius: 25px;
+    padding: 0.9rem 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+    .btn:hover {
+        text-decoration: none;
+        color: var(--button-text-color);
+        border: 1px solid var(--button-border-color);
+        background-color: var(--button-background-color);
+        transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+    }
+
+.btn-primary {
+    color: var(--button-primary-text-color);
+    border: 1px solid var(--button-primary-border-color);
+    background-color: var(--button-primary-background-color);
+}
+
+    .btn-primary:hover {
+        color: var(--button-primary-hover-text-color);
+        border: 1px solid var(--button-primary-hover-border-color);
+        background-color: var(--button-primary-hover-background-color);
+        transition: color 0.1s ease-in-out, border-color 0.1s ease-in-out, background-color 0.1s ease-in-out;
+    }
+
 .form-group {
     display: grid;
     gap: 0.5rem;
