@@ -127,7 +127,6 @@ html, body {
     padding: 1rem;
 }
 
-
 .sidebar {
     background: var(--sidebar-background-color);
     height: 100%;
@@ -410,3 +409,5 @@ form button[type="submit"] {
         border-width: 0 3px 3px 0;
         transform: rotate(45deg);
     }
+
+/* Lägg din egen CSS, för dina delsystem, här under */
