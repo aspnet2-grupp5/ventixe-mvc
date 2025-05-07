@@ -43,7 +43,7 @@
     --text-color: var(--gray-100);
     --text-muted-color: var(--gray-60);
     --background-color: var(--gray-10);
-    --nav-background-color: var(--cool-gray-20);
+    --sidebar-background-color: var(--cool-gray-20);
     --header-background-color: var( --gray-20);
     --main-background-color: var( --gray-20);
     --footer-background-color: var( --gray-20);
@@ -128,6 +128,7 @@ html, body {
 }
 
 .sidebar {
+    grid-area: nav;
     background: var(--sidebar-background-color);
     height: 100%;
     border-radius: 1rem;
@@ -150,8 +151,6 @@ html, body {
     }
 
 nav {
-    grid-area: nav;
-    background-color: var(--nav-background-color);
     border-radius: 1rem;
     padding: 1.5rem;
 }
