@@ -9,7 +9,24 @@
 </head>
 <body>
 
-    @RenderBody()
+    <div class="portal-wrapper">
+        <header>
+            <h1>Page title</h1>
+        </header>
+        <nav class="sidebar">
+            <h1>Ventixe</h1>
+            <ul>
+                <li><a>Menu item 1</a></li>
+                <li><a>Menu item 2</a></li>
+                <li><a>Menu item 3</a></li>
+                <li><a>Menu item 4</a></li>
+            </ul>
+        </nav>
+        <main>
+            @RenderBody()
+        </main>
+        <footer>&copy; Ventixe 2025</footer>
+    </div>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
