@@ -1,0 +1,24 @@
+﻿﻿@{
+
+}
+
+
+<div class="sidebar">
+    <nav>
+        <div>
+            <a class="logotype" href="@Url.Content("~/")">
+                <img src="images/logotype-symbol.svg" />
+                <span>Ventixe</span>
+            </a>
+        </div>
+
+        <div class="nav-links">
+            <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
+                <span>Bookings</span>
+            </a>
+        </div>
+    </nav>
+</div>
