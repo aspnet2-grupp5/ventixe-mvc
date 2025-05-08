@@ -410,4 +410,75 @@ form button[type="submit"] {
         transform: rotate(45deg);
     }
 
-/* Lägg din egen CSS, för dina delsystem, här under */
+
+/* Responsiv design */
+
+/* Mobil först (upp till 600px) */
+@media (max-width: 600px) {
+    .portal-wrapper {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas:
+            "header"
+            "nav"
+            "main"
+            "footer";
+        padding: 0.5rem;
+    }
+
+    nav,
+    header,
+    main,
+    footer {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .btn,
+    .form-input {
+        font-size: 14px;
+        padding: 0.6rem 1rem;
+    }
+}
+
+        /* Surfplatta (601px till 1024px) */
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .portal-wrapper {
+                grid-template-columns: 200px 1fr;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .btn,
+            .form-input {
+                font-size: 15px;
+                padding: 0.7rem 1.2rem;
+            }
+        }
+
+        /* Desktop (från 1025px och uppåt) */
+        @media (min-width: 1025px) {
+            .portal-wrapper {
+                grid-template-columns: 300px 1fr;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .btn,
+            .form-input {
+                font-size: 16px;
+                padding: 0.9rem 1.5rem;
+            }
+        }
