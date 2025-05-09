@@ -26,6 +26,12 @@ public class AuthController(IAuthService authService) : Controller
             return View(model);
         }
 
+        if (!await _authService.RequestVerificationCodeAsync(model.Email))
+        {
+            ViewBag.ErrorMessage = "Unable to send verification code.";
+            return View(model);
+        }
+
         return RedirectToAction("Verify");
     }
 }
