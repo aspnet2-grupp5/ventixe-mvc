@@ -18,5 +18,11 @@
             <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
                 <span>Bookings</span>
             </a>
+            <a class="nav-link @(Context.Request.Path == "/invoices" ? "active" : "")" asp-controller="Invoices" asp-action="Index">
+                <span>Invoices</span>
+            </a>
+            <a class="nav-link @(Context.Request.Path == "/events" ? "active" : "")" asp-controller="Events" asp-action="Index">
+                <span>Events</span>
+            </a>
         </nav>
 </div>
