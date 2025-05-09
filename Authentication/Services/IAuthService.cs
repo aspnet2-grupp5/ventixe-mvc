@@ -6,5 +6,6 @@ namespace Authentication.Services
         Task<bool> AlreadyExistsAsync(string email);
         Task<bool> RequestVerificationCodeAsync(string email);
         Task<bool> SignUpAsync(string email, string password);
+        Task<bool> ValidateVerificationCodeAsync(string email, string code);
     }
 }
