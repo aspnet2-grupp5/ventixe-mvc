@@ -14,6 +14,12 @@ public class AuthService(SignInManager<IdentityUser> signInManager, HttpClient h
         return true;
     }
 
+    public async Task<bool> RequestVerificationCodeAsync(string email)
+    {
+        var result = await _httpClient.PostAsJsonAsync("", new { email });
+        return true;
+    }
+
     public async Task<bool> SignUpAsync(string email, string password)
     {
         var result = await _httpClient.PostAsJsonAsync("", new { email, password });
