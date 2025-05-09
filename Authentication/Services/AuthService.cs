@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 
 namespace Authentication.Services;
 
-public class AuthService(SignInManager<IdentityUser> signInManager, HttpClient httpClient)
+public class AuthService(SignInManager<IdentityUser> signInManager, HttpClient httpClient) : IAuthService
 {
     private readonly SignInManager<IdentityUser> _signInManager = signInManager;
     private readonly HttpClient _httpClient = httpClient;
@@ -16,7 +16,7 @@ public class AuthService(SignInManager<IdentityUser> signInManager, HttpClient h
 
     public async Task<bool> SignUpAsync(string email, string password)
     {
-        var result = await _httpClient.PostAsJsonAsync("", new  { email, password });
+        var result = await _httpClient.PostAsJsonAsync("", new { email, password });
         return true;
     }
 }
