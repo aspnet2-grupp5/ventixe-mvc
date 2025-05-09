@@ -19,18 +19,18 @@ public class AuthController(IAuthService authService) : Controller
     public async Task<IActionResult> HandleSignUpEmail(SignUpEmailViewModel model)
     {
         if (!ModelState.IsValid)
-            return View(model);
+            return View(nameof(SignUpEmail), model);
 
         if (await _authService.AlreadyExistsAsync(model.Email))
         {
             ViewBag.ErrorMessage = "An account already exists.";
-            return View(model);
+            return View(nameof(SignUpEmail), model);
         }
 
         if (!await _authService.RequestVerificationCodeAsync(model.Email))
         {
             ViewBag.ErrorMessage = "Unable to send verification code.";
-            return View(model);
+            return View(nameof(SignUpEmail), model);
         }
 
         return RedirectToAction(nameof(SignUpConfirmAccount), new SignUpConfirmAccountViewModel { Email = model.Email });
@@ -51,15 +51,48 @@ public class AuthController(IAuthService authService) : Controller
         if (string.IsNullOrWhiteSpace(model.VerificationCode))
         {
             ViewBag.ErrorMessage = "Verification code is required.";
-            return View(model);
+            return View(nameof(SignUpConfirmAccount), model);
         }
 
         if (!await _authService.ValidateVerificationCodeAsync(model.Email, model.VerificationCode))
         {
             ViewBag.ErrorMessage = "Invalid or expired verification code.";
-            return View(model);
+            return View(nameof(SignUpConfirmAccount), model);
         }
 
+        return RedirectToAction(nameof(SignUpPassword), new SignUpPasswordViewModel { Email = model.Email });
+    }
+
+    [HttpGet("password")]
+    public IActionResult SignUpPassword(SignUpPasswordViewModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Email))
+            return RedirectToAction(nameof(SignUpEmail));
+
         return View(model);
+    }
+
+    [HttpPost("password")]
+    public async Task<IActionResult> HandleSignUpPassword(SignUpPasswordViewModel model)
+    {
+        if (string.IsNullOrWhiteSpace(model.Email))
+            return RedirectToAction(nameof(SignUpEmail));
+
+        if (!ModelState.IsValid)
+            return View(nameof(SignUpPassword), model);
+
+        if (!await _authService.SignUpAsync(model.Email, model.Password))
+        {
+            ViewBag.ErrorMessage = "Unable to create new account.";
+            return View(nameof(SignUpPassword), model);
+        }
+
+        return RedirectToAction(nameof(Login));
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
     }
 }
