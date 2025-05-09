@@ -8,13 +8,13 @@ public class AuthController(IAuthService authService) : Controller
 {
     private readonly IAuthService _authService = authService;
 
-    [HttpGet("signup")]
+    [HttpGet("auth/signup")]
     public IActionResult SignUpEmail()
     {
         return View();
     }
 
-    [HttpPost("signup")]
+    [HttpPost("auth/signup")]
     public async Task<IActionResult> HandleSignUpEmail(SignUpEmailViewModel model)
     {
         if (!ModelState.IsValid)
@@ -35,13 +35,13 @@ public class AuthController(IAuthService authService) : Controller
         return RedirectToAction(nameof(SignUpConfirmAccount), new SignUpConfirmAccountViewModel { Email = model.Email });
     }
 
-    [HttpGet("confirm-account")]
+    [HttpGet("auth/confirm-account")]
     public IActionResult SignUpConfirmAccount(SignUpConfirmAccountViewModel model)
     {
         return View(model);
     }
 
-    [HttpPost("confirm-account")]
+    [HttpPost("auth/confirm-account")]
     public async Task<IActionResult> HandleSignUpConfirmAccount(SignUpConfirmAccountViewModel model)
     {
         if (string.IsNullOrWhiteSpace(model.Email))
@@ -62,7 +62,7 @@ public class AuthController(IAuthService authService) : Controller
         return RedirectToAction(nameof(SignUpPassword), new SignUpPasswordViewModel { Email = model.Email });
     }
 
-    [HttpGet("password")]
+    [HttpGet("auth/password")]
     public IActionResult SignUpPassword(SignUpPasswordViewModel model)
     {
         if (string.IsNullOrWhiteSpace(model.Email))
@@ -71,7 +71,7 @@ public class AuthController(IAuthService authService) : Controller
         return View(model);
     }
 
-    [HttpPost("password")]
+    [HttpPost("auth/password")]
     public async Task<IActionResult> HandleSignUpPassword(SignUpPasswordViewModel model)
     {
         if (string.IsNullOrWhiteSpace(model.Email))
@@ -89,7 +89,7 @@ public class AuthController(IAuthService authService) : Controller
         return RedirectToAction(nameof(Login));
     }
 
-    [HttpGet]
+    [HttpGet("auth/login")]
     public IActionResult Login()
     {
         return View();
