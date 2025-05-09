@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Ventixe.MVC.Models.SignUp;
+namespace Ventixe.MVC.Models.Authentication.SignUp;
 
 public class SignUpPasswordViewModel
 {
