@@ -15,24 +15,7 @@
 </head>
 <body>
 
-    <div class="portal-wrapper">
-        <div class="sidebar">
-            <partial name="Partials/_Sidebar" /> @* två sätt att göra detta på  *@
-        </div>
-
-        <div class="wrapper">
-            @await Html.PartialAsync("Partials/_Header") @* andra sättet *@ 
-        </div>
-
-
-        <main>
-            @RenderBody()
-        </main>
-
-        @await Html.PartialAsync("Partials/_Footer")
-
-    </div>
-
+    @RenderBody()
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
