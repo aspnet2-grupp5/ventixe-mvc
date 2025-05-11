@@ -15,7 +15,23 @@
 </head>
 <body>
 
-    @RenderBody()
+    <div class="portal-wrapper">
+        <div class="sidebar">
+            <partial name="Partials/_SidebarPartial" />
+        </div>
+
+        <div class="wrapper">
+            @await Html.PartialAsync("Partials/_Header")
+        </div>
+
+
+        <main>
+            @RenderBody()
+        </main>
+
+        @await Html.PartialAsync("Partials/_Footer")
+
+    </div>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
