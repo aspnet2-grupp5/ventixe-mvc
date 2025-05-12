@@ -6,22 +6,27 @@
 <div class="sidebar">
         <div class="logotype">
             <a class="logotype" href="@Url.Content("~/")">
-                <img src="images/logotype-symbol.svg" />
+            <img src="Images/Logo/Ventixe_logo.svg" alt="Ventixe Logo" />
                 <span>Ventixe</span>
             </a>
+
         </div>
 
         <nav class="nav-links">
             <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">
+                <img src="~/images/Icons/Nav/Dashboard.svg"/>
                 <span>Dashboard</span>
             </a>
             <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
+            <img src="~/images/Icons/Nav/CheckSquare.svg" />
                 <span>Bookings</span>
             </a>
             <a class="nav-link @(Context.Request.Path == "/invoices" ? "active" : "")" asp-controller="Invoices" asp-action="Index">
+            <img src="~/images/Icons/Nav/Invoice.svg" />
                 <span>Invoices</span>
             </a>
             <a class="nav-link @(Context.Request.Path == "/events" ? "active" : "")" asp-controller="Events" asp-action="Index">
+            <img src="~/images/Icons/Nav/Ticket.svg" />
                 <span>Events</span>
             </a>
         </nav>
