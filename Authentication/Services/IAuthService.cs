@@ -1,5 +1,4 @@
-﻿
-namespace Authentication.Services
+﻿namespace Ventixe.Authentication.Services
 {
     public interface IAuthService
     {

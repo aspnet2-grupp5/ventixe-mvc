@@ -1,7 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Identity;
 
-namespace Authentication.Services;
+namespace Ventixe.Authentication.Services;
 
 public class AuthService : IAuthService
 {

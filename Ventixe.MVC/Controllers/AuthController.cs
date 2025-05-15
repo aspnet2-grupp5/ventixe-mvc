@@ -1,5 +1,5 @@
-﻿using Authentication.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Ventixe.Authentication.Services;
 using Ventixe.MVC.Models.Authentication.SignUp;
 
 namespace Ventixe.MVC.Controllers;

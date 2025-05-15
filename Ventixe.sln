@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ventixe.MVC", "Ventixe.MVC\Ventixe.MVC.csproj", "{0B398B86-0A43-4474-A256-42F0336FAA95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication", "Authentication\Authentication.csproj", "{CE6454A0-70EC-432F-8517-9C74094A18BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ventixe.Authentication", "Authentication\Ventixe.Authentication.csproj", "{CE6454A0-70EC-432F-8517-9C74094A18BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
