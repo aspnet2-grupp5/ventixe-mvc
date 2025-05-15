@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Ventixe.Authentication.Contexts;
+using Ventixe.Authentication.Data.Contexts;
 using Ventixe.Authentication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
