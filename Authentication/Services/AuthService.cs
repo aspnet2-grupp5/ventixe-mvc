@@ -16,4 +16,19 @@ public class AuthService : IAuthService
         _sender = _client.CreateSender("auth-to-verification");
     }
 
+    public async Task<bool> SendVerificationCodeRequestAsync(string email)
+    {
+        try
+        {
+            var message = new ServiceBusMessage(email);
+            await _sender.SendMessageAsync(message);
+
+            return true;
+        }
+        catch
+        {
+
+            return false;
+        }
+    }
 }
