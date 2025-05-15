@@ -365,3 +365,5 @@ FodyWeavers.xsd
 # appsettings
 appsettings.json
 appsettings.Development.json
+/Ventixe.MVC/appsettings.json
+/Ventixe.MVC/appsettings.Development.json
