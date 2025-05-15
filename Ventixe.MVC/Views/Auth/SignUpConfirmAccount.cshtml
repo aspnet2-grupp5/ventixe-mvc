@@ -1,7 +1,7 @@
 ﻿@model SignUpConfirmAccountViewModel
 
 <form asp-controller="Auth" asp-action="HandleSignUpConfirmAccount" method="post" novalidate>
-    <input type="hidden" asp-for="Email" />
+    <input type="hidden" asp-for="Email" value="@TempData["Email"]?.ToString()" />
 
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {

@@ -39,9 +39,12 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
     }
 
     [HttpGet("auth/confirm-account")]
-    public IActionResult SignUpConfirmAccount(SignUpConfirmAccountViewModel model)
+    public IActionResult SignUpConfirmAccount()
     {
-        return View(model);
+        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
+            return RedirectToAction(nameof(SignUpEmail));
+
+        return View();
     }
 
     [HttpPost("auth/confirm-account")]
@@ -49,6 +52,8 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
     {
         if (string.IsNullOrWhiteSpace(model.Email))
             return RedirectToAction(nameof(SignUpEmail));
+
+        TempData["Email"] = model.Email;
 
         if (string.IsNullOrWhiteSpace(model.VerificationCode))
         {
@@ -80,6 +85,8 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
     {
         if (string.IsNullOrWhiteSpace(model.Email))
             return RedirectToAction(nameof(SignUpEmail));
+
+        TempData["Email"] = model.Email;
 
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
