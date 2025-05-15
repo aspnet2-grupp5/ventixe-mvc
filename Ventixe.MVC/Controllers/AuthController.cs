@@ -21,21 +21,21 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpEmail), model);
 
-        var existsResponse = await _http.PostAsJsonAsync("", model);
+        var existsResponse = await _http.PostAsJsonAsync("https://domain.com/api/users/exists", model);
         if (existsResponse.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "An account already exists.";
             return View(nameof(SignUpEmail), model);
         }
 
-        var requestVerificationCodeResponse = await _http.PostAsJsonAsync("", model);
-        if (!existsResponse.IsSuccessStatusCode)
+        if (!await _authService.SendVerificationCodeRequestAsync(model.Email))
         {
             ViewBag.ErrorMessage = "Unable to send verification code.";
             return View(nameof(SignUpEmail), model);
         }
 
-        return RedirectToAction(nameof(SignUpConfirmAccount), new SignUpConfirmAccountViewModel { Email = model.Email });
+        TempData["Email"] = model.Email;
+        return RedirectToAction(nameof(SignUpConfirmAccount));
     }
 
     [HttpGet("auth/confirm-account")]
@@ -63,16 +63,16 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
             return View(nameof(SignUpConfirmAccount), model);
         }
 
-        return RedirectToAction(nameof(SignUpPassword), new SignUpPasswordViewModel { Email = model.Email });
+        return RedirectToAction(nameof(SignUpPassword));
     }
 
     [HttpGet("auth/password")]
-    public IActionResult SignUpPassword(SignUpPasswordViewModel model)
+    public IActionResult SignUpPassword()
     {
-        if (string.IsNullOrWhiteSpace(model.Email))
+        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
             return RedirectToAction(nameof(SignUpEmail));
 
-        return View(model);
+        return View();
     }
 
     [HttpPost("auth/password")]
@@ -84,7 +84,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
 
-        var response = await _http.PostAsJsonAsync("", model);
+        var response = await _http.PostAsJsonAsync("https://domain.com/api/users", model);
         if (!response.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "Unable to create new account.";
