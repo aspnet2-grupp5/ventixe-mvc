@@ -13,7 +13,7 @@ public class AuthService : IAuthService
     {
         _signInManager = signInManager;
         _client = client;
-        _sender = _client.CreateSender("verification-service");
+        _sender = _client.CreateSender("verification-code-requested");
     }
 
     public async Task<bool> SendVerificationCodeRequestAsync(string email)
