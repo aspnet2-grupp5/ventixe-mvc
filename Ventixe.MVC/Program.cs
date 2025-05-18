@@ -15,6 +15,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(x =>
 {
     x.Password.RequiredLength = 8;
     x.User.RequireUniqueEmail = true;
+    x.SignIn.RequireConfirmedAccount = true;
 })
     .AddEntityFrameworkStores<AuthenticationDbContext>()
     .AddDefaultTokenProviders();
