@@ -4,7 +4,8 @@
 
 @{
     ViewData["Title"] = "Invoices";
-    var selected = Model?.FirstOrDefault();
+    var selected = ViewBag.SelectedInvoice as InvoiceDto;
+
 }
 
 
@@ -16,13 +17,15 @@
             <h2>Invoice List</h2>
         </div>
         <div class="card-body">
+            <a asp-action="Create" class="btn btn-success" style="margin-top: 10px;">➕ Skapa ny faktura</a>
             <div class="form-group">
                 <input class="form-input" type="text" placeholder="Search invoice..." />
             </div>
             <div class="list-group">
                 @foreach (var invoice in Model)
                 {
-                    <a href="#" class="list-group-item list-group-item-action">
+                    <a asp-action="Index" asp-route-id="@invoice.Id" class="list-group-item list-group-item-action">
+
                         <strong>@invoice.InvoiceNumber</strong> - $@invoice.Amount <br />
                         <small>
                             @invoice.IssueDate.ToShortDateString() -

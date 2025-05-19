@@ -1,0 +1,53 @@
+﻿@model Ventixe.MVC.Models.InvoiceModels.CreateInvoiceDto
+
+<h2>Skapa ny faktura</h2>
+
+<form asp-action="Create" method="post">
+    <div>
+        <label asp-for="BookingId"></label>
+        <input asp-for="BookingId" class="form-control" />
+        <span asp-validation-for="BookingId" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="CustomerName"></label>
+        <input asp-for="CustomerName" class="form-control" />
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="EventName"></label>
+        <input asp-for="EventName" class="form-control" />
+        <span asp-validation-for="EventName" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Amount"></label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="IssuedDate"></label>
+        <input asp-for="IssuedDate" type="date" class="form-control" />
+        <span asp-validation-for="IssuedDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="DueDate"></label>
+        <input asp-for="DueDate" type="date" class="form-control" />
+        <span asp-validation-for="DueDate" class="text-danger"></span>
+    </div>
+
+    <div>
+        <label asp-for="Status"></label>
+        <input asp-for="Status" class="form-control" />
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Skapa faktura</button>
+</form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
