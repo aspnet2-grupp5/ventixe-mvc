@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ventixe.MVC.Models;
 using Ventixe.MVC.Models.Dto;
@@ -14,6 +14,7 @@ namespace Ventixe.MVC.Controllers
         {
             _httpClient = httpClientFactory.CreateClient("ventixe.bookings");
         }
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(BookingFilterDto filter)
@@ -31,11 +32,10 @@ namespace Ventixe.MVC.Controllers
             var bookings = response.IsSuccessStatusCode
                 ? await response.Content.ReadFromJsonAsync<List<BookingsModel>>()
                 : new List<BookingsModel>();
-
             return View(bookings);
         }
 
-        [Authorize(Roles = "Member")] // Endast Medlemmar ser sina egna bokningar
+        [Authorize(Roles = "Member")]
         public async Task<IActionResult> UserBookings(BookingFilterDto filter)
         {
             string queryString = $"?Search={filter.Search}&" +
@@ -63,7 +63,6 @@ namespace Ventixe.MVC.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Member")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBookingDto dto)
         {
             if (!ModelState.IsValid) return View(dto);
