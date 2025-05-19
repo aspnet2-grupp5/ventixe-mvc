@@ -1,0 +1,64 @@
+﻿@using Ventixe.MVC.Models
+@model List<InvoiceDto>
+
+
+@{
+    ViewData["Title"] = "Invoices";
+    var selected = Model?.FirstOrDefault();
+}
+
+
+
+<div class="wrapper">
+    <!-- Fakturalista -->
+    <div class="card" style="max-width: 350px;">
+        <div class="card-header">
+            <h2>Invoice List</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <input class="form-input" type="text" placeholder="Search invoice..." />
+            </div>
+            <div class="list-group">
+                @foreach (var invoice in Model)
+                {
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <strong>@invoice.InvoiceNumber</strong> - $@invoice.Amount <br />
+                        <small>
+                            @invoice.IssueDate.ToShortDateString() -
+                            <span class="badge @(invoice.Status == "Paid" ? "bg-success" : "bg-warning")">@invoice.Status</span>
+                        </small>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Faktura-detaljer -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Invoice Details</h2>
+        </div>
+        @if (selected != null)
+        {
+            <div class="card-body">
+                <p><strong>Invoice #:</strong> @selected.InvoiceNumber</p>
+                <p><strong>Status:</strong> @selected.Status</p>
+                <p><strong>Issued:</strong> @selected.IssueDate.ToShortDateString()</p>
+                <p><strong>Due:</strong> @selected.DueDate.ToShortDateString()</p>
+                <p><strong>Bill To:</strong> @selected.BillTo</p>
+                <p><strong>Amount:</strong> $@selected.Amount</p>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary">Edit Invoice</button>
+                <button class="btn">Send Invoice</button>
+            </div>
+        }
+        else
+        {
+            <div class="card-body">
+                <p>No invoice selected.</p>
+            </div>
+        }
+    </div>
+</div>
