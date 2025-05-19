@@ -1,4 +1,6 @@
-﻿namespace Ventixe.MVC.Models.Dto
+﻿using Ventixe.MVC.Models.Bookings;
+
+namespace Ventixe.MVC.Models.Bookings.Dto
 {
     public class UpdateBookingDto
     {

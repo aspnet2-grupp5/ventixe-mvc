@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System;
-using System.Linq;
-using Ventixe.MVC.Models;
-using Ventixe.MVC.Models.Dto;
+using Ventixe.MVC.Models.Bookings;
+using Ventixe.MVC.Models.Bookings.Dto;
 
 namespace Ventixe.MVC.Controllers
 {
-    [Authorize] // Alla actions kräver inloggning
+    [Authorize]
     public class BookingsController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -21,31 +15,54 @@ namespace Ventixe.MVC.Controllers
             _httpClient = httpClientFactory.CreateClient("ventixe.bookings");
         }
 
-        [Authorize(Roles = "Admin")] // Endast Admin kan se alla bokningar
-        public async Task<IActionResult> Index()
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Index(BookingFilterDto filter)
         {
-            var response = await _httpClient.GetAsync("/bookings/admin-bookings");
-            var bookings = await response.Content.ReadFromJsonAsync<List<BookingsModel>>();
+            string queryString = $"?Search={filter.Search}&" +
+                                  $"FromDate={filter.FromDate:yyyy-MM-dd}&" +
+                                  $"ToDate={filter.ToDate:yyyy-MM-dd}&" +
+                                  $"Statuses={string.Join(",", filter.Statuses ?? new List<string>())}&" +
+                                  $"SortBy={filter.SortBy}&" +
+                                  $"SortDesc={filter.SortDesc}&" +
+                                  $"Page={filter.Page}&" +
+                                  $"PageSize={filter.PageSize}";
+
+            var response = await _httpClient.GetAsync($"/bookings/admin-bookings{queryString}");
+            var bookings = response.IsSuccessStatusCode
+                ? await response.Content.ReadFromJsonAsync<List<BookingsModel>>()
+                : new List<BookingsModel>();
             return View(bookings);
         }
 
-        [Authorize(Roles = "Member")] // Endast Medlemmar ser sina egna bokningar
-        public async Task<IActionResult> UserBookings()
+        [Authorize(Roles = "Member")]
+        public async Task<IActionResult> UserBookings(BookingFilterDto filter)
         {
-            var response = await _httpClient.GetAsync("/bookings/user-bookings");
-            var bookings = await response.Content.ReadFromJsonAsync<List<BookingsModel>>();
+            string queryString = $"?Search={filter.Search}&" +
+                                  $"FromDate={filter.FromDate:yyyy-MM-dd}&" +
+                                  $"ToDate={filter.ToDate:yyyy-MM-dd}&" +
+                                  $"Statuses={string.Join(",", filter.Statuses ?? new List<string>())}&" +
+                                  $"SortBy={filter.SortBy}&" +
+                                  $"SortDesc={filter.SortDesc}&" +
+                                  $"Page={filter.Page}&" +
+                                  $"PageSize={filter.PageSize}";
+
+            var response = await _httpClient.GetAsync($"/bookings/user-bookings{queryString}");
+            var bookings = response.IsSuccessStatusCode
+                ? await response.Content.ReadFromJsonAsync<List<BookingsModel>>()
+                : new List<BookingsModel>();
+
             return View("Index", bookings);
         }
 
-        [Authorize(Roles = "Admin,Member")] // Både Admin och Member kan skapa bokning
+        [Authorize(Roles = "Admin,Member")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,Member")] // Både Admin och Member kan skapa bokning
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Member")]
         public async Task<IActionResult> Create(CreateBookingDto dto)
         {
             if (!ModelState.IsValid) return View(dto);
@@ -55,7 +72,7 @@ namespace Ventixe.MVC.Controllers
             return View(dto);
         }
 
-        [Authorize(Roles = "Admin")] // Endast Admin kan redigera
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             var response = await _httpClient.GetAsync($"/bookings/{id}");
@@ -65,8 +82,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")] // Endast Admin kan redigera
-        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id, UpdateBookingDto dto)
         {
             if (!ModelState.IsValid) return View(dto);
@@ -74,37 +90,6 @@ namespace Ventixe.MVC.Controllers
             if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
             ModelState.AddModelError(string.Empty, "Fel vid uppdatering av bokning");
             return View(dto);
-        }
-
-        [Authorize(Roles = "Admin")] // Endast Admin kan ta bort
-        public async Task<IActionResult> Delete(string id)
-        {
-            var response = await _httpClient.GetAsync($"/bookings/{id}");
-            if (!response.IsSuccessStatusCode) return NotFound();
-            var booking = await response.Content.ReadFromJsonAsync<BookingsModel>();
-            return View(booking);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")] // Endast Admin kan ta bort
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var response = await _httpClient.DeleteAsync($"/bookings/{id}");
-            if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
-            ModelState.AddModelError(string.Empty, "Fel vid borttagning av bokning");
-            return RedirectToAction(nameof(Index));
-        }
-
-        [Authorize(Roles = "Member")] // Endast Medlemmar kan avboka
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cancel(string id)
-        {
-            var response = await _httpClient.PatchAsync($"/bookings/{id}/cancel", null);
-            if (response.IsSuccessStatusCode) return RedirectToAction(nameof(UserBookings));
-            ModelState.AddModelError(string.Empty, "Fel vid avbokning");
-            return RedirectToAction(nameof(UserBookings));
         }
     }
 }
