@@ -21,7 +21,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpEmail), model);
 
-        var existsResponse = await _http.PostAsJsonAsync("https://domain.com/api/users/exists", model);
+        var existsResponse = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/exists", model);
         if (existsResponse.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "An account already exists.";
@@ -61,7 +61,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
             return View(nameof(SignUpConfirmAccount), model);
         }
 
-        var response = await _http.PostAsJsonAsync("https://domain.com/api/users/", model);
+        var response = await _http.PostAsJsonAsync("https://domain.com/verificationservice/validate-verification-code", model);
         if (!response.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "Invalid or expired verification code.";
@@ -91,7 +91,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
 
-        var response = await _http.PostAsJsonAsync("https://domain.com/api/users", model);
+        var response = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", model);
         if (!response.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "Unable to create new account.";
