@@ -61,7 +61,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
             return View(nameof(SignUpConfirmAccount), model);
         }
 
-        var response = await _http.PostAsJsonAsync("", model);
+        var response = await _http.PostAsJsonAsync("https://domain.com/api/users/", model);
         if (!response.IsSuccessStatusCode)
         {
             ViewBag.ErrorMessage = "Invalid or expired verification code.";
