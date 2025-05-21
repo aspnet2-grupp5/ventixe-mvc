@@ -1,4 +1,4 @@
-﻿namespace Ventixe.MVC.Models;
+﻿namespace Ventixe.MVC.Models.Bookings;
 
 public enum BookingStatus
 {

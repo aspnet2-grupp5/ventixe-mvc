@@ -1,4 +1,4 @@
-﻿namespace Ventixe.MVC.Models.Dto
+﻿namespace Ventixe.MVC.Models.Bookings.Dto
 {
     public class BookingFilterDto
     {

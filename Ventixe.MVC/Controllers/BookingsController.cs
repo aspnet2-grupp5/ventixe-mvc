@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Ventixe.MVC.Models;
-using Ventixe.MVC.Models.Dto;
+using Ventixe.MVC.Models.Bookings;
+using Ventixe.MVC.Models.Bookings.Dto;
 
 namespace Ventixe.MVC.Controllers
 {
