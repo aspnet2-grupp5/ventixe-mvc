@@ -1,14 +1,10 @@
 ﻿@using Ventixe.MVC.Models
 @model List<InvoiceDto>
 
-
 @{
     ViewData["Title"] = "Invoices";
     var selected = ViewBag.SelectedInvoice as InvoiceDto;
-
 }
-
-
 
 <div class="wrapper">
     <!-- Fakturalista -->
@@ -25,10 +21,9 @@
                 @foreach (var invoice in Model)
                 {
                     <a asp-action="Index" asp-route-id="@invoice.Id" class="list-group-item list-group-item-action">
-
                         <strong>@invoice.InvoiceNumber</strong> - $@invoice.Amount <br />
                         <small>
-                            @invoice.IssueDate.ToShortDateString() -
+                            @invoice.IssuedDate.ToShortDateString() -
                             <span class="badge @(invoice.Status == "Paid" ? "bg-success" : "bg-warning")">@invoice.Status</span>
                         </small>
                     </a>
@@ -47,13 +42,14 @@
             <div class="card-body">
                 <p><strong>Invoice #:</strong> @selected.InvoiceNumber</p>
                 <p><strong>Status:</strong> @selected.Status</p>
-                <p><strong>Issued:</strong> @selected.IssueDate.ToShortDateString()</p>
+                <p><strong>Issued:</strong> @selected.IssuedDate.ToShortDateString()</p>
                 <p><strong>Due:</strong> @selected.DueDate.ToShortDateString()</p>
                 <p><strong>Bill To:</strong> @selected.BillTo</p>
                 <p><strong>Amount:</strong> $@selected.Amount</p>
             </div>
             <div class="card-footer">
-                <button class="btn btn-primary">Edit Invoice</button>
+                <a asp-action="Edit" asp-route-id="@selected.Id" class="btn btn-primary">Edit Invoice</a>
+
                 <button class="btn">Send Invoice</button>
             </div>
         }
