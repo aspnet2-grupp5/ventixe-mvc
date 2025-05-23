@@ -3,11 +3,14 @@
 <h2>Skapa ny faktura</h2>
 
 <form asp-action="Create" method="post">
-    <div>
-        <label asp-for="BookingId"></label>
-        <input asp-for="BookingId" class="form-control" />
+    <div class="form-group">
+        <label asp-for="BookingId" class="form-label"></label>
+        <select asp-for="BookingId" asp-items="ViewBag.Bookings" class="form-control">
+            <option value="">-- Välj bokning --</option>
+        </select>
         <span asp-validation-for="BookingId" class="text-danger"></span>
     </div>
+
 
     <div>
         <label asp-for="CustomerName"></label>

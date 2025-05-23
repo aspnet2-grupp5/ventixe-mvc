@@ -3,6 +3,7 @@
     public class InvoiceDto
     {
         public int Id { get; set; }
+        public string? CustomerName { get; set; }
         public string? InvoiceNumber { get; set; }
         public decimal Amount { get; set; }
         public DateTime IssuedDate { get; set; }
