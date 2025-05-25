@@ -1,60 +1,94 @@
 ﻿@model Ventixe.MVC.Models.InvoiceModels.UpdateInvoiceDto
 
-<div class="card">
-    <div class="card-header">
-        <h2>Redigera faktura</h2>
-    </div>
-    <div class="card-body">
-        <form asp-action="Edit" method="post">
+@{
+    ViewData["Title"] = "Edit Invoice";
+}
+
+<div class="create-invoice-container">
+    <div class="create-invoice-card">
+        <div class="create-invoice-header">
+            <div>
+                <h2 style="margin: 0; color: var(--secondary-100);">Edit Invoice</h2>
+                <p style="color: var(--gray-60); margin: 0.5rem 0 0 0;">Update the invoice details</p>
+            </div>
+            <div class="create-invoice-icon">
+                ✏️
+            </div>
+        </div>
+
+        <form asp-action="Edit" method="post" class="create-invoice-form">
             @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
 
-            <div class="form-group">
-                <label asp-for="BookingId" class="form-label"></label>
-                <select asp-for="BookingId" asp-items="ViewBag.Bookings" class="form-control">
-                    <option value="">-- Välj bokning --</option>
-                </select>
-                <span asp-validation-for="BookingId" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="BookingId" class="form-label">Booking</label>
+                    <select asp-for="BookingId" asp-items="ViewBag.Bookings" class="form-input">
+                        <option value="">-- Select booking --</option>
+                    </select>
+                    <span asp-validation-for="BookingId" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Status" class="form-label">Status</label>
+                    <select asp-for="Status" class="form-input">
+                        <option value="">-- Select status --</option>
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Overdue">Overdue</option>
+                    </select>
+                    <span asp-validation-for="Status" class="validation-error"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="CustomerName" class="form-label"></label>
-                <input asp-for="CustomerName" class="form-input" />
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="CustomerName" class="form-label">Customer Name</label>
+                    <input asp-for="CustomerName" class="form-input" placeholder="Enter customer name" />
+                    <span asp-validation-for="CustomerName" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EventName" class="form-label">Event Name</label>
+                    <input asp-for="EventName" class="form-input" placeholder="Enter event name" />
+                    <span asp-validation-for="EventName" class="validation-error"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="EventName" class="form-label"></label>
-                <input asp-for="EventName" class="form-input" />
-                <span asp-validation-for="EventName" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Amount" class="form-label">Amount ($)</label>
+                    <input asp-for="Amount" class="form-input" placeholder="0.00" type="number" step="0.01" />
+                    <span asp-validation-for="Amount" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Amount" class="form-label"></label>
-                <input asp-for="Amount" class="form-input" type="number" step="0.01" />
-                <span asp-validation-for="Amount" class="text-danger"></span>
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="IssuedDate" class="form-label">Issued Date</label>
+                    <input asp-for="IssuedDate" type="date" class="form-input" />
+                    <span asp-validation-for="IssuedDate" class="validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DueDate" class="form-label">Due Date</label>
+                    <input asp-for="DueDate" type="date" class="form-input" />
+                    <span asp-validation-for="DueDate" class="validation-error"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="IssuedDate" class="form-label"></label>
-                <input asp-for="IssuedDate" class="form-input" type="date" />
-                <span asp-validation-for="IssuedDate" class="text-danger"></span>
+            <div class="form-actions">
+                <a asp-action="Index" class="btn btn-secondary">
+                    ← Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    💾 Save Changes
+                </button>
             </div>
-
-            <div class="form-group">
-                <label asp-for="DueDate" class="form-label"></label>
-                <input asp-for="DueDate" class="form-input" type="date" />
-                <span asp-validation-for="DueDate" class="text-danger"></span>
-            </div>
-
-
-            <div class="form-group">
-                <label asp-for="Status" class="form-label"></label>
-                <input asp-for="Status" class="form-input" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Spara ändringar</button>
         </form>
     </div>
 </div>
