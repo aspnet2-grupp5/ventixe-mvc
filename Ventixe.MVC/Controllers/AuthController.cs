@@ -4,10 +4,9 @@ using Ventixe.MVC.Models.Authentication.SignUp;
 
 namespace Ventixe.MVC.Controllers;
 
-public class AuthController(IAuthService authService, HttpClient http) : Controller
+public class AuthController(IAuthService authService) : Controller
 {
     private readonly IAuthService _authService = authService;
-    private readonly HttpClient _http = http;
 
     [HttpGet("auth/signup")]
     public IActionResult SignUpEmail()
@@ -21,8 +20,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpEmail), model);
 
-        var existsResponse = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/exists", model);
-        if (existsResponse.IsSuccessStatusCode)
+        if (await _authService.AlreadyExistsAsync(model.Email))
         {
             ViewBag.ErrorMessage = "An account already exists.";
             return View(nameof(SignUpEmail), model);
@@ -61,8 +59,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
             return View(nameof(SignUpConfirmAccount), model);
         }
 
-        var response = await _http.PostAsJsonAsync("https://domain.com/verificationservice/validate-verification-code", model);
-        if (!response.IsSuccessStatusCode)
+        if (!await _authService.RequestCodeValidationAsync(model.Email, model.VerificationCode))
         {
             ViewBag.ErrorMessage = "Invalid or expired verification code.";
             return View(nameof(SignUpConfirmAccount), model);
@@ -91,8 +88,7 @@ public class AuthController(IAuthService authService, HttpClient http) : Control
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
 
-        var response = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", model);
-        if (!response.IsSuccessStatusCode)
+        if (!await _authService.CreateAccountAsync(model.Email, model.Password))
         {
             ViewBag.ErrorMessage = "Unable to create new account.";
             return View(nameof(SignUpPassword), model);
