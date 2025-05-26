@@ -1,5 +1,10 @@
 ﻿@model SignUpConfirmAccountViewModel
 
+<div>
+    <h3>Verify account</h3>
+    <p>Enter the 6 digit code sent to your email</p>
+</div>
+
 <form asp-controller="Auth" asp-action="HandleSignUpConfirmAccount" method="post" novalidate>
     <input type="hidden" asp-for="Email" value="@TempData["Email"]?.ToString()" />
 

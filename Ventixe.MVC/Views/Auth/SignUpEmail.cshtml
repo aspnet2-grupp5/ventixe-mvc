@@ -1,5 +1,9 @@
 ﻿@model SignUpEmailViewModel
 
+<div>
+    <h3>Sign up</h3>
+</div>
+
 <form asp-controller="Auth" asp-action="HandleSignUpEmail" method="post" novalidate>
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
