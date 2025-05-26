@@ -14,6 +14,6 @@ public class LoginViewModel
     [Display(Name = "Password", Prompt = "Enter password")]
     public string Password { get; set; } = null!;
 
-    [Display(Name = "Remember me?")]
-    public bool IsPersistent { get; set; }
+    //[Display(Name = "Remember me?")]
+    //public bool IsPersistent { get; set; }
 }
