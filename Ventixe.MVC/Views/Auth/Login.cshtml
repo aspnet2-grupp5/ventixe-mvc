@@ -1,5 +1,9 @@
 ﻿@model LoginViewModel
 
+<div>
+    <h3>Sign in to your account</h3>
+</div>
+
 <form asp-controller="Auth" asp-action="Login" method="post" novalidate>
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
@@ -17,3 +21,5 @@
     </div>
     <button type="submit" class="btn btn-primary">Log in</button>
 </form>
+
+<div><p>Not a member? <a asp-controller="Auth" asp-action="SignUp">Sign up.</a></p></div>
