@@ -413,7 +413,7 @@ form button[type="submit"] {
 /* Responsiv design */
 
 /* Mobil först (upp till 600px) */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .portal-wrapper
     .wrapper {
         display: flex;
