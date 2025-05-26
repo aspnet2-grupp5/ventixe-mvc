@@ -9,28 +9,29 @@
             : "Ventixe Inc.")
     </title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
     <div class="portal-wrapper">
-        
+        <div class="sidebar">
             <partial name="Partials/_SidebarPartial" />
-       
+        </div>
 
-       <header>
+        <header> 
             @await Html.PartialAsync("Partials/_Header")
-       </header>
+        </header>
            
-       
 
 
         <main>
             @RenderBody()
         </main>
+        <footer> 
 
         @await Html.PartialAsync("Partials/_Footer")
+        </footer>
 
     </div>
 

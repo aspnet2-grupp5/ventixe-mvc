@@ -1,4 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient("ventixe.bookings", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7199/api");
+});
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

@@ -43,7 +43,7 @@
     --text-color: var(--gray-100);
     --text-muted-color: var(--gray-60);
     --background-color: var(--gray-10);
-    --nav-background-color: var(--cool-gray-20);
+    --sidebar-background-color: var(--cool-gray-20);
     --header-background-color: var( --gray-20);
     --main-background-color: var( --gray-20);
     --footer-background-color: var( --gray-20);
@@ -128,6 +128,7 @@ html, body {
 }
 
 .sidebar {
+    grid-area: nav;
     background: var(--sidebar-background-color);
     height: 100%;
     border-radius: 1rem;
@@ -150,8 +151,6 @@ html, body {
     }
 
 nav {
-    grid-area: nav;
-    background-color: var(--nav-background-color);
     border-radius: 1rem;
     padding: 1.5rem;
 }
@@ -410,6 +409,145 @@ form button[type="submit"] {
         transform: rotate(45deg);
     }
 
+
+/* Responsiv design */
+
+/* Mobil först (upp till 600px) */
+@media (max-width: 767px) {
+    .portal-wrapper
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        justify-content: space-around;
+        padding: 0.5rem;
+        order: -1; 
+    }
+
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+        .nav-links a {
+            justify-content: center;
+        }
+
+            .nav-links a span {
+                display: none; 
+            }
+}
+
+    main {
+        width: 100%;
+    }
+}
+
+    .logotype {
+        justify-content: center;
+        margin: 1rem;
+    }
+
+        .nav-links a span {
+            display: none; 
+        }
+
+    header,
+    main,
+    footer {
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+        .card .card-header,
+        .card .card-body,
+        .card .card-footer {
+            padding: 1rem;
+        }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 13px;
+    }
+}
+
+        /* Surfplatta (601px till 1024px) */
+    @media (max-width: 1024px) {
+        .portal-wrapper,
+        .wrapper {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                "header"
+                "main"
+                "footer";
+            padding: 1rem;
+        }
+
+        .sidebar {
+            display: flex;
+            height: auto;
+            border-radius: 0.5rem;
+            grid-area: auto;
+            margin-bottom: 1rem;
+        }
+
+        nav {
+            padding: 1rem;
+        }
+
+        .nav-links {
+            grid-template-columns: 1fr 1fr;
+            height: auto;
+        }
+
+        .btn,
+        .form-input {
+            font-size: 15px;
+            padding: 0.7rem 1.2rem;
+        }
+
+     }
+
+        /* Desktop (från 1025px och uppåt) */
+        @media (min-width: 1025px) {
+            .portal-wrapper,
+            .wrapper{
+                display:grid;
+                grid-template-columns: 300px 1fr;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .btn,
+            .form-input {
+                font-size: 16px;
+                padding: 0.9rem 1.5rem;
+            }
+        }
         /* Responsiv design */
 
         /* Mobil först (upp till 600px) */
