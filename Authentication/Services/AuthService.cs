@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using Ventixe.Authentication.Data.Entities;
@@ -9,6 +10,7 @@ namespace Ventixe.Authentication.Services;
 public class AuthService : IAuthService
 {
     private readonly HttpClient _http;
+    private readonly IConfiguration _configuration;
     private readonly ILogger<AuthService> _logger;
     private readonly ServiceBusClient _client;
     private readonly ServiceBusSender _sender;
@@ -61,7 +63,8 @@ public class AuthService : IAuthService
     {
         try
         {
-            var result = await _http.PostAsJsonAsync("https://domain.com/verificationservice/validate-verification-code", new { email, code });
+            var validateCodeUrl = _configuration["VerificationServiceProvider:ValidateVerificationCode"];
+            var result = await _http.PostAsJsonAsync(validateCodeUrl, new { email, code });
 
             return result.IsSuccessStatusCode;
         }
@@ -98,7 +101,15 @@ public class AuthService : IAuthService
 
     public async Task<bool> LoginAsync(string email, string password)
     {
-        var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
-        return result.Succeeded;
+        try
+        {
+            var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
+            return result.Succeeded;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Login request failed.");
+            return false;
+        }
     }
 }
