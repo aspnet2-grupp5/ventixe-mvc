@@ -4,14 +4,9 @@ using Ventixe.MVC.Services;
 
 namespace Ventixe.MVC.Controllers
 {
-    public class EventController : Controller
+    public class EventController (EventService eventService): Controller
     {
-        private readonly EventService _eventService;
-
-        public EventController()
-        {
-            _eventService = new EventService();
-        }
+        private readonly EventService _eventService = eventService;
 
         public async Task<IActionResult> Index()
         {
