@@ -2,7 +2,7 @@
 
 namespace Ventixe.MVC.Controllers
 {
-    public class EventController : Controller
+    public class EventController (): Controller
     {
         [Route("Home/events")]
         public IActionResult Index()
