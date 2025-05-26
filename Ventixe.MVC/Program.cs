@@ -2,6 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("InvoiceApi", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+
 
 var app = builder.Build();
 app.UseHsts();
