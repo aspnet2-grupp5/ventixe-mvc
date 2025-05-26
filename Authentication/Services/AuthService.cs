@@ -17,7 +17,7 @@ public class AuthService : IAuthService
     private readonly UserManager<AppUserEntity> _userManager;
     private readonly SignInManager<AppUserEntity> _signInManager;
 
-    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager)
+    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IConfiguration configuration)
     {
         _http = http;
         _client = client;
@@ -25,6 +25,7 @@ public class AuthService : IAuthService
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
+        _configuration = configuration;
     }
 
     public async Task<bool> AlreadyExistsAsync(string email)
