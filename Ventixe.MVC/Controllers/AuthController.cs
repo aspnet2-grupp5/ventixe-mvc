@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Ventixe.Authentication.Services;
+using Ventixe.MVC.Models.Authentication;
 using Ventixe.MVC.Models.Authentication.SignUp;
 
 namespace Ventixe.MVC.Controllers;
@@ -112,7 +113,7 @@ public class AuthController(IAuthService authService) : Controller
         if (ModelState.IsValid)
         {
             var result = await _authService.LoginAsync(model.Email, model.Password);
-            if (result.Succeeded)
+            if (result)
                 return LocalRedirect(returnUrl);
         }
 
