@@ -5,6 +5,7 @@ namespace Ventixe.MVC.Models.Authentication.SignUp;
 public class SignUpPasswordViewModel
 {
     [Required]
+    [EmailAddress]
     public string Email { get; set; } = null!;
 
     [Required]

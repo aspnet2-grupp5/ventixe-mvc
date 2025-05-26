@@ -5,6 +5,7 @@ namespace Ventixe.MVC.Models.Authentication;
 public class LoginViewModel
 {
     [Required]
+    [EmailAddress]
     [Display(Name = "Email", Prompt = "Enter email")]
     public string Email { get; set; } = null!;
 
