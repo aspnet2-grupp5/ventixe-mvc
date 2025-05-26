@@ -548,3 +548,130 @@ form button[type="submit"] {
                 padding: 0.9rem 1.5rem;
             }
         }
+
+
+main:has(.invoice-layout) {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+
+.invoice-layout {
+    display: grid !important;
+    grid-template-columns: 400px 1fr !important;
+    gap: 2rem !important;
+    height: calc(100vh - 4rem) !important;
+    padding: 1rem !important;
+    margin: -1.5rem !important;
+}
+
+    .invoice-layout .invoice-sidebar {
+        background: var(--card-background-color) !important;
+        border-radius: 1rem !important;
+        padding: 1.5rem !important;
+        overflow-y: auto !important;
+        height: 100% !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    .invoice-layout .invoice-main {
+        background: var(--card-background-color) !important;
+        border-radius: 1rem !important;
+        padding: 1.5rem !important;
+        overflow-y: auto !important;
+        height: 100% !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    .invoice-layout .invoice-item {
+        padding: 1rem !important;
+        border-radius: 0.8rem !important;
+        margin-bottom: 0.8rem !important;
+        background: var(--gray-20) !important;
+        border: none !important;
+        display: block !important;
+        text-decoration: none !important;
+        color: inherit !important;
+        transition: all 0.2s ease !important;
+    }
+
+        .invoice-layout .invoice-item:hover {
+            background: var(--gray-30) !important;
+            transform: translateY(-1px) !important;
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+
+        .invoice-layout .invoice-item.selected {
+            background: var(--primary-30) !important;
+            border-left: 4px solid var(--primary-100) !important;
+        }
+
+    .invoice-layout .invoice-stats {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1fr !important;
+        gap: 1rem !important;
+        margin-bottom: 1.5rem !important;
+        text-align: center !important;
+    }
+
+    .invoice-layout .invoice-header {
+        background: linear-gradient(135deg, var(--primary-100) 0%, var(--primary-90) 100%) !important;
+        padding: 2rem !important;
+        border-radius: 1rem !important;
+        margin-bottom: 2rem !important;
+        color: white !important;
+    }
+
+    .invoice-layout .bill-section {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 3rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .invoice-layout .ticket-details-section {
+        background: var(--gray-20) !important;
+        border-radius: 1rem !important;
+        padding: 1.5rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .invoice-layout .invoice-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
+
+    .invoice-layout .notes-section {
+        background: var(--cool-gray-10) !important;
+        border-radius: 1rem !important;
+        padding: 1.5rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .invoice-layout .invoice-actions {
+        border-top: 1px solid var(--gray-30) !important;
+        padding-top: 1.5rem !important;
+        display: flex !important;
+        gap: 1rem !important;
+        flex-wrap: wrap !important;
+    }
+
+    .invoice-layout .invoice-empty-state {
+        text-align: center !important;
+        padding: 4rem 2rem !important;
+    }
+
+    .invoice-layout .invoice-header-details {
+        border-bottom: 1px solid var(--gray-30) !important;
+        padding-bottom: 1rem !important;
+        margin-bottom: 2rem !important;
+    }
+
+    .invoice-layout .invoice-thank-you {
+        text-align: center !important;
+        padding: 2rem !important;
+        color: var(--gray-60) !important;
+        font-style: italic !important;
+        margin-bottom: 2rem !important;
+    }
