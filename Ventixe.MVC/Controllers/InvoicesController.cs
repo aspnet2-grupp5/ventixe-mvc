@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Net.Http;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Text;
 using Ventixe.MVC.Models;
 using Ventixe.MVC.Models.InvoiceModels;
 
@@ -25,7 +23,6 @@ public class InvoicesController : Controller
         var json = await response.Content.ReadAsStringAsync();
         var invoices = JsonConvert.DeserializeObject<List<InvoiceDto>>(json) ?? new List<InvoiceDto>();
 
-        // Sökfilter
         if (!string.IsNullOrWhiteSpace(search))
         {
             search = search.ToLower();
@@ -36,7 +33,6 @@ public class InvoicesController : Controller
                 .ToList();
         }
 
-        // Välj markerad faktura
         var selectedInvoice = id.HasValue
             ? invoices.FirstOrDefault(i => i.Id == id.Value)
             : invoices.FirstOrDefault();
@@ -49,6 +45,7 @@ public class InvoicesController : Controller
     [HttpGet]
     public IActionResult Create()
     {
+        // Lite dummydata för test 
         ViewBag.Bookings = new List<SelectListItem>
         {
             new SelectListItem { Value = "1", Text = "Bröllop - Kund A" },
