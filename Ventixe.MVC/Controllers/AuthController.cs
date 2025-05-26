@@ -98,8 +98,25 @@ public class AuthController(IAuthService authService) : Controller
     }
 
     [HttpGet("auth/login")]
-    public IActionResult Login()
+    public IActionResult Login(string returnUrl = "/")
     {
+        ViewBag.ReturnUrl = returnUrl;
         return View();
+    }
+
+    [HttpPost("auth/login")]
+    public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = "/")
+    {
+        ViewBag.ReturnUrl = returnUrl;
+
+        if (ModelState.IsValid)
+        {
+            var result = await _authService.LoginAsync(model.Email, model.Password);
+            if (result.Succeeded)
+                return LocalRedirect(returnUrl);
+        }
+
+        ViewBag.ErrorMessage = "Invalid email or password";
+        return View(model);
     }
 }

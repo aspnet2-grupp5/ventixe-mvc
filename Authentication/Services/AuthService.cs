@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
+using Ventixe.Authentication.Data.Entities;
 
 namespace Ventixe.Authentication.Services;
 
@@ -11,13 +12,17 @@ public class AuthService : IAuthService
     private readonly ILogger<AuthService> _logger;
     private readonly ServiceBusClient _client;
     private readonly ServiceBusSender _sender;
+    private readonly UserManager<AppUserEntity> _userManager;
+    private readonly SignInManager<AppUserEntity> _signInManager;
 
-    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger)
+    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager)
     {
         _http = http;
         _client = client;
         _sender = _client.CreateSender("verification-code-requested");
         _logger = logger;
+        _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public async Task<bool> AlreadyExistsAsync(string email)
@@ -71,14 +76,29 @@ public class AuthService : IAuthService
     {
         try
         {
-            var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
+            var user = new AppUserEntity
+            {
+                UserName = email,
+                Email = email,
+            };
 
-            return result.IsSuccessStatusCode;
+            var result = await _userManager.CreateAsync(user, password);
+            return result.Succeeded;
+
+            //var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
+
+            //return result.IsSuccessStatusCode;
         }
         catch (HttpRequestException ex)
         {
             _logger.LogError(ex, "HTTP request failed when creating account for email: {Email}", email);
             return false;
         }
+    }
+
+    public async Task<bool> LoginAsync(string email, string password)
+    {
+        var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
+        return result.Succeeded;
     }
 }
