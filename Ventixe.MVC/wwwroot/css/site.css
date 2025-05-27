@@ -412,9 +412,9 @@ form button[type="submit"] {
 
 /* Responsiv design */
 
-/* Mobil först (upp till 600px) */
+/* Mobil först (upp till 767px) */
 @media (max-width: 767px) {
-    .portal-wrapper
+    .portal-wrapper,
     .wrapper {
         display: flex;
         flex-direction: column;
@@ -442,58 +442,55 @@ form button[type="submit"] {
             .nav-links a span {
                 display: none;
             }
-}
 
-main {
-    width: 100%;
-}
+    main {
+        width: 100%;
+    }
 
-}
+    .logotype {
+        justify-content: center;
+        margin: 1rem;
+    }
 
-.logotype {
-    justify-content: center;
-    margin: 1rem;
-}
+    .nav-links a span {
+        display: none;
+    }
 
-.nav-links a span {
-    display: none;
-}
-
-header,
-main,
-footer {
-    border-radius: 0.5rem;
-    padding: 1rem;
-}
-
-.card {
-    padding: 1rem;
-}
-
-    .card .card-header,
-    .card .card-body,
-    .card .card-footer {
+    header,
+    main,
+    footer {
+        border-radius: 0.5rem;
         padding: 1rem;
     }
 
-h1 {
-    font-size: 24px;
+    .card {
+        padding: 1rem;
+    }
+
+        .card .card-header,
+        .card .card-body,
+        .card .card-footer {
+            padding: 1rem;
+        }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    .btn {
+        padding: 0.7rem 1rem;
+        font-size: 13px;
+    }
 }
 
-h2 {
-    font-size: 22px;
-}
-
-h3 {
-    font-size: 20px;
-}
-
-.btn {
-    padding: 0.7rem 1rem;
-    font-size: 13px;
-}
-
-}
 
 /* Surfplatta (601px till 1024px) */
 @media (max-width: 1024px) {
