@@ -7,7 +7,7 @@ using Ventixe.MVC.Services;
 
 namespace Ventixe.MVC.Controllers
 {
-    public class EventController(
+    public class EventsController(
         IEventService eventService,
         CategoryProto.CategoryProtoClient categoryClient,
         LocationProto.LocationProtoClient locationClient,
@@ -19,7 +19,9 @@ namespace Ventixe.MVC.Controllers
         private readonly LocationProto.LocationProtoClient _locationClient = locationClient;
         private readonly StatusProto.StatusProtoClient _statusClient = statusClient;
         private readonly IGrpcEventFactory _grpcEventFactory = grpcEventFactory;
+        
 
+        [Route ("Events")]
         public async Task<IActionResult> Index()
         {
             ViewData["Title"] = "Events";
@@ -74,7 +76,7 @@ namespace Ventixe.MVC.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         [HttpGet("Events/Edit/{id}")]

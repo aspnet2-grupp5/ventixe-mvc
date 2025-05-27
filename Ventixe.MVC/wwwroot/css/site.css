@@ -632,13 +632,13 @@ form button[type="submit"] {
         justify-content: space-around;
     }
 
-        .nav-links a {
-            justify-content: center;
-        }
+    .nav-links a {
+        justify-content: center;
+    }
 
-            .nav-links a span {
-                display: none;
-            }
+    .nav-links a span {
+        display: none;
+    }
 
     main {
         width: 100%;
@@ -647,10 +647,6 @@ form button[type="submit"] {
     .logotype {
         justify-content: center;
         margin: 1rem;
-    }
-
-    .nav-links a span {
-        display: none;
     }
 
     header,
@@ -664,11 +660,11 @@ form button[type="submit"] {
         padding: 1rem;
     }
 
-        .card .card-header,
-        .card .card-body,
-        .card .card-footer {
-            padding: 1rem;
-        }
+    .card .card-header,
+    .card .card-body,
+    .card .card-footer {
+        padding: 1rem;
+    }
 
     h1 {
         font-size: 24px;
@@ -717,12 +713,15 @@ form button[type="submit"] {
         grid-template-columns: 1fr 1fr;
         height: auto;
     }
-
-    .btn,
-    .form-input {
-        font-size: 15px;
-        padding: 0.7rem 1.2rem;
-    }
+        .nav-links a span{
+        display: inline;
+        }
+    
+        .btn,
+        .form-input {
+            font-size: 15px;
+            padding: 0.7rem 1.2rem;
+        }
 }
 
 /* Desktop (från 1025px och uppåt) */
@@ -741,6 +740,9 @@ form button[type="submit"] {
     .form-input {
         font-size: 16px;
         padding: 0.9rem 1.5rem;
+    }
+    .nav-links a span {
+        display: inline;
     }
 }
 

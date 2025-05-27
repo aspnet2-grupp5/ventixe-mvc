@@ -7,9 +7,11 @@
     <div class="event-list">
         @if (Model != null && Model.Any())
         {
+
+            <a asp-action="Create" asp-controller="Events" class="btn btn-success">Create New</a>
             foreach (var e in Model)
             {
-                <a asp-controller="Event" asp-action="Details" asp-route-id="@e.EventId" class="event-link">
+                <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId" class="event-link">
                     <div class="event-card">
                         <div class="event-image">
                             @if (!string.IsNullOrEmpty(e.EventImage))
@@ -46,6 +48,7 @@
                         </div>
                         <div class="event-status">@e.Status</div>
                     </div>
+
                 </a>
             }
         }
