@@ -21,6 +21,17 @@ builder.Services.AddIdentity<AppUserEntity, IdentityRole>(x =>
     .AddEntityFrameworkStores<AuthenticationDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(x =>
+{
+    x.LoginPath = "/auth/login";
+    x.AccessDeniedPath = "/denied";
+    x.Cookie.HttpOnly = true;
+    x.Cookie.IsEssential = true;
+    x.Cookie.SameSite = SameSiteMode.Lax;
+    x.ExpireTimeSpan = TimeSpan.FromDays(7);
+    x.SlidingExpiration = true;
+});
+
 var app = builder.Build();
 app.UseHsts();
 app.UseHttpsRedirection();
