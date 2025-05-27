@@ -5,6 +5,7 @@ using Ventixe.Authentication.Data.Contexts;
 using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Services;
+using Ventixe.MVC.Protos;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
