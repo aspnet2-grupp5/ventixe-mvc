@@ -1,9 +1,11 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Net.Http.Json;
 using Ventixe.Authentication.Data.Entities;
+using Ventixe.Authentication.Models;
 
 namespace Ventixe.Authentication.Services;
 
@@ -30,18 +32,9 @@ public class AuthService : IAuthService
 
     public async Task<bool> AlreadyExistsAsync(string email)
     {
-        try
-        {
-            var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/exists", new { email });
+        var result = await _userManager.Users.AnyAsync(x => x.Email == email);
 
-            return result.IsSuccessStatusCode;
-        }
-        catch (HttpRequestException ex)
-        {
-            _logger.LogError(ex, "HTTP request failed when checking user existence for email: {Email}", email);
-            return false;
-        }
-
+        return result;
     }
 
     public async Task<bool> SendVerificationCodeRequestAsync(string email)
