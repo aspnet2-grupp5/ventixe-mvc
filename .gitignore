@@ -363,5 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # appsettings
-Ventixe.MVC/appsettings.json
-Ventixe.MVC/appsettings.Development.json
+appsettings.json
+appsettings.Development.json
+/Ventixe.MVC/appsettings.json
+/Ventixe.MVC/appsettings.Development.json
