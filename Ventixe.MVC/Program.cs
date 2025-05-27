@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Ventixe.Authentication.Data.Contexts;
 using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Services;
+using Ventixe.MVC.Services;
+using Ventixe.MVC.Protos;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -37,6 +39,29 @@ builder.Services.ConfigureApplicationCookie(x =>
     x.Cookie.SameSite = SameSiteMode.Lax;
     x.ExpireTimeSpan = TimeSpan.FromDays(7);
     x.SlidingExpiration = true;
+});
+
+builder.Services.AddScoped<IEventService, GrpcEventService>();
+builder.Services.AddScoped<IGrpcEventFactory, GrpcEventFactory>();
+
+builder.Services.AddGrpcClient<EventProto.EventProtoClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration["GRPC:EventServiceProvider"]!);
+});
+
+builder.Services.AddGrpcClient<CategoryProto.CategoryProtoClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration["GRPC:EventServiceProvider"]!);
+});
+
+builder.Services.AddGrpcClient<LocationProto.LocationProtoClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration["GRPC:EventServiceProvider"]!);
+});
+
+builder.Services.AddGrpcClient<StatusProto.StatusProtoClient>(o =>
+{
+    o.Address = new Uri(builder.Configuration["GRPC:EventServiceProvider"]!);
 });
 
 var app = builder.Build();

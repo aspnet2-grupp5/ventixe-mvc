@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Ventixe.MVC.Models.Events.EventViewModel>
+
+@* EVENT HEADER PARTIAL *@
+<partial name="./Partials/_Header" />
+
+<div class="event-page">
+    <div class="event-list">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var e in Model)
+            {
+                <a asp-controller="Event" asp-action="Details" asp-route-id="@e.EventId" class="event-link">
+                    <div class="event-card">
+                        <div class="event-image">
+                            @if (!string.IsNullOrEmpty(e.EventImage))
+                            {
+                                <img src="@e.EventImage" alt="@e.EventTitle" />
+                            }
+                            else
+                            {
+                                <span>No Image</span>
+                            }
+                        </div>
+                        <div class="event-column">
+                            <div class="event-category">@e.Category</div>
+                            <h4 class="event-title">@e.EventTitle</h4>
+                            <div class="event-description">@e.Description</div>
+                        </div>
+                        <div class="event-column date">
+                            <div class="event-location">
+                                <i class="fa-light fa-location-dot"></i>
+                                @e.Location
+                            </div>
+                            <div class="event-date">@e.Date?.ToString("MMMM d, yyyy")</div>
+                            <div class="event-time">@e.Date?.ToString("h:mm tt")</div>
+                        </div>
+                        <div class="event-price">
+                            @if (e.Price == 0 || e.Price == null)
+                            {
+                                <span class="free">Free</span>
+                            }
+                            else
+                            {
+                                <span class="paid">@e.Price?.ToString("C")</span>
+                            }
+                        </div>
+                        <div class="event-status">@e.Status</div>
+                    </div>
+                </a>
+            }
+        }
+        else
+        {
+            <p>No events found.</p>
+        }
+    </div>
+</div>

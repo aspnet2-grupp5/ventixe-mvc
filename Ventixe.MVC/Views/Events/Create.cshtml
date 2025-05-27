@@ -1,0 +1,81 @@
+﻿@model Ventixe.MVC.Models.CreateEventViewModel
+@{
+    ViewData["Title"] = "Create Event";
+    Layout = "_Layout";
+}
+
+<div id="login" class="card">
+    <div class="card-header">
+        <h4 class="card-title">Create Event</h4>
+        <p>
+            @ViewBag?.ErrorMessage
+        </p>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" method="post" asp-controller="Event" novalidate>
+            <input type="hidden" name="returnUrl" value="@ViewBag?.ReturnUrl" />
+
+            <div class="form-group">
+                <label asp-for="EventTitle" class="form-label"></label>
+                <input asp-for="EventTitle" class="form-input" />
+                <span asp-validation-for="EventTitle" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-input"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="form-label"></label>
+                <input asp-for="Image" type="file" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Date" class="form-label"></label>
+                <input asp-for="Date" type="datetime-local" class="form-input" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" type="number" class="form-input" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Quantity" class="form-label"></label>
+                <input asp-for="Quantity" type="number" class="form-input" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CategoryName" class="form-label">Category</label>
+                <select asp-for="CategoryName" asp-items="Model.Categories" class="form-control">
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Location" class="form-label">Location</label>
+                <select asp-for="Location" asp-items="Model.Locations" class="form-control">
+                    <option value="">-- Select Location --</option>
+                </select>
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="form-label">Status</label>
+                <select asp-for="Status" asp-items="Model.Statuses" class="form-control">
+                    <option value="">-- Select Status --</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+</div>
