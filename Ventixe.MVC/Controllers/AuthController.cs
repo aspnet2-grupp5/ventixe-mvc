@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Models.Authentication;
 using Ventixe.MVC.Models.Authentication.SignUp;
@@ -102,6 +101,9 @@ public class AuthController(IAuthService authService) : Controller
     [HttpGet("auth/login")]
     public IActionResult Login(string returnUrl = "/")
     {
+        if (User.Identity?.IsAuthenticated == true)
+            return RedirectToAction("Index", "Home");
+
         ViewBag.ReturnUrl = returnUrl;
         return View();
     }

@@ -6,7 +6,7 @@
 
 
 <div class="logotype" href="@Url.Content("~/")">
-    <img src="~/Images/Logo/Ventixe_logo.svg" alt="Ventixe Logo" />
+    <img src="~/Images/Logo/Ventixe_logo.svg" />
     <span>Ventixe</span>
 </div>
 
@@ -15,6 +15,7 @@
 </div>
 
 <form asp-controller="Auth" asp-action="Login" method="post" novalidate>
+    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
         <div class="form-errormessage">
@@ -32,4 +33,4 @@
     <button type="submit" class="btn btn-primary">Log in</button>
 </form>
 
-<div class="additional-info"><p>Not a member? <a asp-controller="Auth" asp-action="SignUp">Sign up.</a></p></div>
+<div class="additional-info"><p>Not a member? <a asp-controller="Auth" asp-action="SignUp">Sign up here</a></p></div>
