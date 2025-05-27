@@ -448,8 +448,6 @@ main {
     width: 100%;
 }
 
-}
-
 .logotype {
     justify-content: center;
     margin: 1rem;
@@ -523,12 +521,15 @@ h3 {
         grid-template-columns: 1fr 1fr;
         height: auto;
     }
-
-    .btn,
-    .form-input {
-        font-size: 15px;
-        padding: 0.7rem 1.2rem;
-    }
+        .nav-links a span{
+        display: inline;
+        }
+    
+        .btn,
+        .form-input {
+            font-size: 15px;
+            padding: 0.7rem 1.2rem;
+        }
 }
 
 /* Desktop (från 1025px och uppåt) */
@@ -547,6 +548,9 @@ h3 {
     .form-input {
         font-size: 16px;
         padding: 0.9rem 1.5rem;
+    }
+    .nav-links a span {
+        display: inline;
     }
 }
 
