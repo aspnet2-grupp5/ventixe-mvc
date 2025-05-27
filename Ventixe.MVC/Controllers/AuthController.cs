@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Models.Authentication;
 using Ventixe.MVC.Models.Authentication.SignUp;
@@ -120,4 +121,28 @@ public class AuthController(IAuthService authService) : Controller
         ViewBag.ErrorMessage = "Invalid email or password";
         return View(model);
     }
+
+    // temporär http-request
+    [HttpGet("auth/delete-user")]
+    public IActionResult DeleteUser()
+    {
+        return View(new DeleteUserViewModel());
+    }
+
+    // temporär http-request
+    [HttpPost("auth/delete-user")]
+    public async Task<IActionResult> DeleteUser(DeleteUserViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var result = await _authService.DeleteUserAsync(model.Email);
+        if (result.Succeeded)
+            return RedirectToAction("Index", "Home");
+
+        foreach (var err in result.Errors)
+            ModelState.AddModelError(string.Empty, err.Description);
+        return View(model);
+    }
+
 }
