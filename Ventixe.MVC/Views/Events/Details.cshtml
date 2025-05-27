@@ -1,0 +1,48 @@
+﻿@model Ventixe.MVC.Models.Events.EventViewModel
+
+@{
+    ViewData["Title"] = Model?.EventTitle ?? "Event Details";
+}
+
+@if (Model == null)
+{
+    <p>Event not found.</p>
+}
+else
+{
+    <div class="event-page">
+        <div class="event-header">
+            <h1>@Model.EventTitle</h1>
+            <p>@Model.Description</p>
+        </div>
+
+        <div class="event-body d-flex gap-4">
+            <div class="event-image">
+                @if (!string.IsNullOrEmpty(Model.EventImage))
+                {
+                    <img src="@Model.EventImage" alt="Event Image" style="max-width:400px; max-height:300px;" />
+                }
+                else
+                {
+                    <p><em>No image available.</em></p>
+                }
+            </div>
+
+            <div class="event-info">
+                <p><strong>Date:</strong> @Model.Date?.ToString("yyyy-MM-dd HH:mm")</p>
+                <p><strong>Price:</strong> @(Model.Price.HasValue ? $"{Model.Price.Value:0.00} kr" : "-")</p>
+                <p><strong>Available Seats:</strong> @(Model.Quantity.HasValue && Model.SoldQuantity.HasValue ? (Model.Quantity - Model.SoldQuantity).ToString() : "-")</p>
+                <p><strong>Category:</strong> @Model.Category ?? "-"</p>
+                <p><strong>Location:</strong> @Model.Location ?? "-"</p>
+                <p><strong>Status:</strong> @Model.Status ?? "-"</p>
+            </div>
+        </div>
+
+        <div class="event-actions mt-4">
+            <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-warning">Edit</a>
+            <a asp-action="Create" asp-controller="Event" class="btn btn-success">Create New</a>
+            <a asp-action="Delete" asp-controller="Event" asp-route-id="@Model.EventId" class="btn btn-danger">Delete</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to event list</a>
+        </div>
+    </div>
+}
