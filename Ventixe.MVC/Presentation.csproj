@@ -5,20 +5,26 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Booking\**" />
+    <Compile Remove="wwwroot\css\Images\**" />
+    <Content Remove="Views\Booking\**" />
+    <Content Remove="wwwroot\css\Images\**" />
+    <EmbeddedResource Remove="Views\Booking\**" />
+    <EmbeddedResource Remove="wwwroot\css\Images\**" />
+    <None Remove="Views\Booking\**" />
+    <None Remove="wwwroot\css\Images\**" />
+  </ItemGroup>
 	
 	<ItemGroup>
 		<Protobuf Include="Protos\event.proto" GrpcServices="Client" />
 	</ItemGroup>
 
-
-	<ItemGroup>
-    <Folder Include="wwwroot\css\Images\" />
-    <Folder Include="Views\Booking\" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.31.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.71.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.71.0" />
     <PackageReference Include="Grpc.Tools" Version="2.72.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

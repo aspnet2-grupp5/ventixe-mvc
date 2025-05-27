@@ -179,6 +179,8 @@ header {
 }
 
 main {
+    display: flex;
+    flex-direction: column;
     grid-area: main;
     background-color: var(--main-background-color);
     border-radius: 1rem;
@@ -447,7 +449,6 @@ form button[type="submit"] {
     main {
         width: 100%;
     }
-}
 
     .logotype {
         justify-content: center;
@@ -491,7 +492,6 @@ form button[type="submit"] {
         padding: 0.7rem 1rem;
         font-size: 13px;
     }
-}
 
         /* Surfplatta (601px till 1024px) */
     @media (max-width: 1024px) {
