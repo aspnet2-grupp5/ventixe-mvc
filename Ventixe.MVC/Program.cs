@@ -6,7 +6,14 @@ using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddHttpClient();
+
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient("InvoiceApi", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]);
+});
+
 
 builder.Services.AddHttpClient();
 builder.Services.AddScoped(x => new ServiceBusClient(builder.Configuration.GetConnectionString("ServiceBusConnection")));

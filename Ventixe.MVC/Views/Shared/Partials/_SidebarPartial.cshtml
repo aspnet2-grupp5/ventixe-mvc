@@ -1,28 +1,28 @@
-﻿﻿@{
-
+﻿@{
 }
-
-
 <div class="sidebar">
-        <div class="logotype">
-            <a class="logotype" href="@Url.Content("~/")">
-                <img src="images/logotype-symbol.svg" />
-                <span>Ventixe</span>
-            </a>
-        </div>
-
-        <nav class="nav-links">
-            <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">
-                <span>Dashboard</span>
-            </a>
-            <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
-                <span>Bookings</span>
-            </a>
-            <a class="nav-link @(Context.Request.Path == "/invoices" ? "active" : "")" asp-controller="Invoices" asp-action="Index">
-                <span>Invoices</span>
-            </a>
-            <a class="nav-link @(Context.Request.Path == "/events" ? "active" : "")" asp-controller="Events" asp-action="Index">
-                <span>Events</span>
-            </a>
-        </nav>
+    <div class="logotype-container">
+        <a class="logotype" href="@Url.Content("~/")">
+            <img src="~/Images/Logo/Ventixe_logo.svg" alt="Ventixe Logo" style="height: 32px; width: auto;" />
+            <span>Ventixe</span>
+        </a>
+    </div>
+    <nav class="nav-links">
+        <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">
+            <img src="~/images/Icons/Nav/Dashboard.svg" alt="Dashboard" />
+            <span>Dashboard</span>
+        </a>
+        <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
+            <img src="~/images/Icons/Nav/CheckSquare.svg" alt="Bookings" />
+            <span>Bookings</span>
+        </a>
+        <a class="nav-link @(Context.Request.Path == "/invoices" ? "active" : "")" asp-controller="Invoices" asp-action="Index">
+            <img src="~/images/Icons/Nav/Invoice.svg" alt="Invoices" />
+            <span>Invoices</span>
+        </a>
+        <a class="nav-link @(Context.Request.Path == "/events" ? "active" : "")" asp-controller="Events" asp-action="Index">
+            <img src="~/images/Icons/Nav/Ticket.svg" alt="Events" />
+            <span>Events</span>
+        </a>
+    </nav>
 </div>

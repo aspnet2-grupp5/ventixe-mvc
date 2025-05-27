@@ -1,0 +1,183 @@
+﻿@using Ventixe.MVC.Models
+@model List<InvoiceDto>
+
+@{
+    ViewData["Title"] = "Invoices";
+    var selected = ViewBag.SelectedInvoice as InvoiceDto;
+}
+
+<div class="invoice-layout">
+    <!-- Vänster sida - Invoice List -->
+    <div class="invoice-sidebar">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="margin: 0; color: var(--secondary-100);">Invoice List</h2>
+            <a asp-action="Create" class="btn btn-sm btn-primary">Add</a>
+        </div>
+
+        
+
+        <!-- Invoice Statistics -->
+        <div class="invoice-stats">
+            <div>
+                <div style="color: var(--secondary-100); font-weight: 600; font-size: 1.5rem;">
+                    @Model.Count(i => i.Status == "Paid")
+                </div>
+                <div style="color: var(--gray-60); font-size: 0.8rem;">Paid</div>
+            </div>
+            <div>
+                <div style="color: var(--secondary-100); font-weight: 600; font-size: 1.5rem;">
+                    @Model.Count(i => i.Status == "Unpaid")
+                </div>
+                <div style="color: var(--gray-60); font-size: 0.8rem;">Unpaid</div>
+            </div>
+            <div>
+                <div style="color: var(--secondary-100); font-weight: 600; font-size: 1.5rem;">
+                    @Model.Count(i => i.Status == "Overdue")
+                </div>
+                <div style="color: var(--gray-60); font-size: 0.8rem;">Overdue</div>
+            </div>
+        </div>
+
+        <form method="get" asp-action="Index">
+            <input class="form-input" type="text" name="search" placeholder="Search invoice"
+                   style="margin-bottom: 1rem;" value="@(ViewContext.HttpContext.Request.Query["search"])" />
+        </form>
+
+
+        <!-- Invoice List -->
+        <div>
+            @foreach (var invoice in Model)
+            {
+                var isSelected = selected != null && selected.Id == invoice.Id;
+                var itemClass = "invoice-item" + (isSelected ? " selected" : "");
+
+                <a asp-action="Index" asp-route-id="@invoice.Id" class="@itemClass">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: var(--text-color);">@invoice.InvoiceNumber</strong>
+                        <span style="color: var(--text-color); font-weight: 500;">$@invoice.Amount</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <small style="color: var(--gray-60);">@invoice.IssuedDate.ToString("MMM dd, yyyy")</small>
+                        <span style="padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.7rem; font-weight: 500;
+                            background-color: @(invoice.Status == "Paid" ? "var(--secondary-100)" : invoice.Status == "Overdue" ? "var(--yellow-100)" : "var(--primary-90)");
+                            color: @(invoice.Status == "Paid" || invoice.Status == "Overdue" ? "white" : "var(--text-color)");">
+                            @invoice.Status
+                        </span>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Höger sida - Invoice Details -->
+    <div class="invoice-main">
+        <div class="invoice-header-details">
+            <h2 style="margin: 0; color: var(--secondary-100);">Invoice Details</h2>
+            @if (selected != null)
+            {
+                <div style="margin-top: 0.5rem; color: var(--gray-60); font-size: 0.9rem;">
+                    <span>Issued Date: @selected.IssuedDate.ToString("yyyy/MM/dd, HH:mm tt")</span>
+                    <span style="margin-left: 2rem;">Due Date: @selected.DueDate.ToString("yyyy/MM/dd, HH:mm tt")</span>
+                </div>
+            }
+        </div>
+
+        @if (selected != null)
+        {
+            <!-- Invoice Header -->
+            <div class="invoice-header">
+                <h3 style="color: white; margin: 0; font-size: 2rem; font-weight: 600;">
+                    #@selected.InvoiceNumber
+                </h3>
+                <div style="margin-top: 0.5rem;">
+                    <span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.8rem;">
+                        @(selected.Status == "Paid" ? "✓ Paid" : selected.Status == "Overdue" ? "⚠ Overdue" : "○ Unpaid")
+                    </span>
+                </div>
+            </div>
+
+            <!-- Bill From/To Section -->
+            <div class="bill-section">
+                <div>
+                    <h5 style="color: var(--gray-60); margin-bottom: 1rem;">Bill From</h5>
+                    <div style="color: var(--text-color);">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">Event Management Co.</div>
+                        <div style="color: var(--gray-70); line-height: 1.4;">
+                            Tomtebodavägen 3A<br />
+                            Stockholm<br />
+                            171 65 Solna<br />
+                            Group5Ventixe@eventmgmt.com<br />
+                            08-81-55-23
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h5 style="color: var(--gray-60); margin-bottom: 1rem;">Bill To</h5>
+                    <div style="color: var(--text-color);">
+                        <div style="font-weight: 600; margin-bottom: 0.5rem;">@selected.CustomerName</div>
+                        <div style="color: var(--gray-70); line-height: 1.4;">
+                            787 Main Street,<br />
+                            Beverly Hills, CA<br />
+                            90210<br />
+                            @(selected.CustomerName.Replace(" ", ".").ToLower())<br />
+                            +1-310-555-6789
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice Summary -->
+            <div class="ticket-details-section">
+                <h5 style="margin-bottom: 1rem;">Invoice Summary</h5>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--gray-40);">
+                            <th style="text-align: left; padding: 0.8rem 0; color: var(--gray-60); font-weight: 500;">Description</th>
+                            <th style="text-align: right; padding: 0.8rem 0; color: var(--gray-60); font-weight: 500;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-top: 2px solid var(--primary-100);">
+                            <td style="padding: 0.8rem 0; color: var(--text-color); font-weight: 600; font-size: 1.1rem;">Total Amount</td>
+                            <td style="text-align: right; padding: 0.8rem 0; color: var(--primary-100); font-weight: 600; font-size: 1.2rem;">$@selected.Amount</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="notes-section">
+                <h6 style="margin-bottom: 0.8rem;">Note</h6>
+                <p style="color: var(--gray-70); line-height: 1.5; margin: 0;">
+                    Please make payment before the due date to avoid any penalties or cancellation of your ticket. For any questions or concerns, contact our support team at support@eventmgmt.com or call +1-800-555-1234.
+                </p>
+            </div>
+
+            <!-- Thank You Section -->
+            <div class="invoice-thank-you">
+                Thank you for your business!
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="invoice-actions">
+                <a asp-action="Edit" asp-route-id="@selected.Id" class="btn btn-primary">✏️ Edit Invoice</a>
+                <button class="btn btn-primary">📤 Send Invoice</button>
+                <form asp-action="Delete" asp-route-id="@selected.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn" style="color: var(--gray-70); background: var(--gray-20);"
+                            onclick="return confirm('Are you sure you want to delete?')">
+                        🗑️ Delete Invoice
+                    </button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="invoice-empty-state">
+                <div style="color: var(--gray-50); font-size: 3rem; margin-bottom: 1rem;">📄</div>
+                <h4 style="color: var(--gray-60); margin-bottom: 0.5rem;">No invoice selected</h4>
+                <p style="color: var(--gray-60); margin: 0;">Select an invoice from the list to view details</p>
+            </div>
+        }
+    </div>
+</div>
