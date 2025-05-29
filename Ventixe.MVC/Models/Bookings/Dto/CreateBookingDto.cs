@@ -2,6 +2,7 @@
 
 public class CreateBookingDto
 {
+    public string? UserId { get; set; }
     public string? InvoiceId { get; set; }
     public DateTime BookingDate { get; set; }
     public string? EventId { get; set; }

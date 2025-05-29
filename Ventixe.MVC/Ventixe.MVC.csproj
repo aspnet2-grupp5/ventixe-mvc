@@ -6,6 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Booking\**" />
+    <Content Remove="Views\Booking\**" />
+    <EmbeddedResource Remove="Views\Booking\**" />
+    <None Remove="Views\Booking\**" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<Protobuf Include="Protos\event.proto" GrpcServices="Client" />
 	</ItemGroup>
@@ -27,7 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Authentication\Ventixe.Authentication.csproj" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <Folder Include="Views\Booking\" />
   </ItemGroup>
 
 
