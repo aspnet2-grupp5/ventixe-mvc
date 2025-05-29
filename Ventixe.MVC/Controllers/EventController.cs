@@ -8,7 +8,6 @@ using Ventixe.MVC.Services;
 
 namespace Ventixe.MVC.Controllers
 {
-    [Authorize]
     public class EventController(
         IEventService eventService,
         CategoryProto.CategoryProtoClient categoryClient,
