@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ventixe.MVC.Models;
@@ -7,6 +8,7 @@ using Ventixe.MVC.Services;
 
 namespace Ventixe.MVC.Controllers
 {
+    [Authorize]
     public class EventController(
         IEventService eventService,
         CategoryProto.CategoryProtoClient categoryClient,
