@@ -5,10 +5,11 @@
 
 <div class="event-page">
     <div class="event-list">
+
+        <a asp-action="Create" asp-controller="Events" class="btn-create">Create New</a> 
+
         @if (Model != null && Model.Any())
         {
-
-            <a asp-action="Create" asp-controller="Events" class="btn-create">Create New</a>
             foreach (var e in Model)
             {
                 <a asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId" class="event-link">
