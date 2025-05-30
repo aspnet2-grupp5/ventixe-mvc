@@ -37,17 +37,6 @@ public class AuthService : IAuthService
         return result;
     }
 
-    // temporär metod
-    public async Task<IdentityResult> DeleteUserAsync(string email)
-    {
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-
-        return await _userManager.DeleteAsync(user);
-    }
-
-
     public async Task<bool> SendVerificationCodeRequestAsync(string email)
     {
         try
@@ -116,5 +105,21 @@ public class AuthService : IAuthService
             _logger.LogError(ex, "Login request failed.");
             return false;
         }
+    }
+
+    public async Task LogOutAsync()
+    {
+        await _signInManager.SignOutAsync();
+    }
+
+
+    // temporär metod
+    public async Task<IdentityResult> DeleteUserAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+
+        return await _userManager.DeleteAsync(user);
     }
 }
