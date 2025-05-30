@@ -93,11 +93,11 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<bool> LoginAsync(string email, string password)
+    public async Task<bool> LoginAsync(string email, string password, bool isPersistent)
     {
         try
         {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent, false);
             return result.Succeeded;
         }
         catch (Exception ex)

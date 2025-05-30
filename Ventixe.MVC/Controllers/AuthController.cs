@@ -115,8 +115,7 @@ public class AuthController(IAuthService authService) : Controller
 
         if (ModelState.IsValid)
         {
-            var result = await _authService.LoginAsync(model.Email, model.Password);
-            if (result)
+            if (await _authService.LoginAsync(model.Email, model.Password, model.IsPersistent))
                 return LocalRedirect(returnUrl);
         }
 
