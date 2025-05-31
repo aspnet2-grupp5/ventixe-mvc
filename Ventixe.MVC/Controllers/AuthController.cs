@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Models.Authentication;
 using Ventixe.MVC.Models.Authentication.SignUp;
@@ -40,8 +41,8 @@ public class AuthController(IAuthService authService) : Controller
     [HttpGet("auth/confirm-account")]
     public IActionResult SignUpConfirmAccount()
     {
-        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
-            return RedirectToAction(nameof(SignUpEmail));
+        //if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
+        //    return RedirectToAction(nameof(SignUpEmail));
 
         return View();
     }
@@ -72,8 +73,8 @@ public class AuthController(IAuthService authService) : Controller
     [HttpGet("auth/password")]
     public IActionResult SignUpPassword()
     {
-        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
-            return RedirectToAction(nameof(SignUpEmail));
+        //if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
+        //    return RedirectToAction(nameof(SignUpEmail));
 
         return View();
     }
