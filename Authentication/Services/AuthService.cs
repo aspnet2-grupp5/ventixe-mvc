@@ -113,7 +113,7 @@ public class AuthService : IAuthService
     }
 
 
-    // temporär metod
+    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     public async Task<IdentityResult> DeleteUserAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);

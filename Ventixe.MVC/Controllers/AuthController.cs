@@ -131,14 +131,14 @@ public class AuthController(IAuthService authService) : Controller
     }
 
 
-    // temporär http-request
+    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     [HttpGet("auth/delete-user")]
     public IActionResult DeleteUser()
     {
         return View(new DeleteUserViewModel());
     }
 
-    // temporär http-request
+    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     [HttpPost("auth/delete-user")]
     public async Task<IActionResult> DeleteUser(DeleteUserViewModel model)
     {
