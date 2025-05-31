@@ -14,10 +14,10 @@
 
         <div class="auth-card-body card-body">
 
-            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
             {
                 <div class="form-errormessage">
-                    @ViewBag.ErrorMessage
+                    @ViewBag?.ErrorMessage
                 </div>
             }
 
