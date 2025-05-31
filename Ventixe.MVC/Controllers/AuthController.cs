@@ -130,7 +130,7 @@ public class AuthController(IAuthService authService) : Controller
         return LocalRedirect("/");
     }
 
-
+    #region Delete User
     // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     [HttpGet("auth/delete-user")]
     public IActionResult DeleteUser()
@@ -138,7 +138,6 @@ public class AuthController(IAuthService authService) : Controller
         return View(new DeleteUserViewModel());
     }
 
-    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     [HttpPost("auth/delete-user")]
     public async Task<IActionResult> DeleteUser(DeleteUserViewModel model)
     {
@@ -153,5 +152,5 @@ public class AuthController(IAuthService authService) : Controller
             ModelState.AddModelError(string.Empty, err.Description);
         return View(model);
     }
-
+    #endregion
 }
