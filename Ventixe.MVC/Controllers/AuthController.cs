@@ -124,6 +124,15 @@ public class AuthController(IAuthService authService) : Controller
         return View(model);
     }
 
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> LogOut()
+    {
+        await _authService.LogOutAsync();
+        return RedirectToAction(nameof(Login));
+    }
+
+
     // temporär http-request
     [HttpGet("auth/delete-user")]
     public IActionResult DeleteUser()
