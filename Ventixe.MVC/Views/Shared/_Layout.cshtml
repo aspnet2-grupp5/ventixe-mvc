@@ -15,6 +15,7 @@
 <body>
 
     <div class="portal-wrapper">
+
         <div class="sidebar">
             <partial name="Partials/_SidebarPartial" />
         </div>
@@ -22,15 +23,13 @@
         <header> 
             @await Html.PartialAsync("Partials/_Header")
         </header>
-           
-
 
         <main>
             @RenderBody()
         </main>
-        <footer> 
 
-        @await Html.PartialAsync("Partials/_Footer")
+        <footer> 
+            @await Html.PartialAsync("Partials/_Footer")
         </footer>
 
     </div>
