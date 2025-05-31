@@ -19,18 +19,26 @@ namespace Ventixe.MVC.Controllers
         private readonly LocationProto.LocationProtoClient _locationClient = locationClient;
         private readonly StatusProto.StatusProtoClient _statusClient = statusClient;
         private readonly IGrpcEventFactory _grpcEventFactory = grpcEventFactory;
-        
 
-        [Route ("Events")]
-        public async Task<IActionResult> Index()
+
+        [Route("Events")]
+        public async Task<IActionResult> Index(string? status)
         {
             ViewData["Title"] = "Events";
+            ViewData["CurrentFilter"] = status; // För att markera vald filter i vyn
 
             var eventsResult = await _eventService.GetAllEventsAsync();
 
             var model = eventsResult.Events
                 .Select(e => _grpcEventFactory.ToEventViewModel(e))
                 .ToList();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                model = model
+                    .Where(e => e.Status.Equals(status, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
             return View(model);
         }
