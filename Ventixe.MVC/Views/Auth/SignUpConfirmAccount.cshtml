@@ -27,11 +27,12 @@
         </div>
 
         <div class="auth-card-body card-body">
+            <input type="hidden" asp-for="VerificationCode" />
 
             <div class="form-group verification-code-wrapper">
                 @for (int i = 0; i < 6; i++)
                 {
-                    <input asp-for="VerificationCode" type="text" maxlength="1" class="verification-code-input" id="box-@i" />
+                    <input type="text" maxlength="1" class="verification-code-input" id="box-@i" />
                 }
             </div>
 
@@ -52,7 +53,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const boxes = document.querySelectorAll(".verification-code-input");
-        const hiddenInput = document.querySelector("input[name='Code']");
+        const hiddenInput = document.querySelector("input[name='VerificationCode']");
         boxes[0].focus();
 
         boxes.forEach((box, index) => {
