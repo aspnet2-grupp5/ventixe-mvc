@@ -1,15 +1,18 @@
 ﻿<footer>
     <div class="container">
         <div class="row">
-            <div class="col-md-12 text-center">
+                <div class="policy-container"> 
                 <p>&copy; 2023 Ventixe. All rights reserved.</p>
-                <p>
-                    Follow us on:
-                    <a href="https://www.facebook.com/ventixe" target="_blank">Facebook</a> |
-                    <a href="https://www.twitter.com/ventixe" target="_blank">Twitter</a> |
-                    <a href="https://www.instagram.com/ventixe" target="_blank">Instagram</a>
-                </p>
+                    <a asp-action="Privacy" asp-controller="Home">Privacy Policy</a> 
+                    <a asp-action="Terms" asp-controller="Home">Terms of Service</a> 
+                    <a asp-action="Contact" asp-controller="Home">Contact Us</a>
+                </div>
+                <div class="social-icons">
+                    <img src="~/Images/Icons/Footer/FacebookLogo.svg" alt="Facebook" />
+                    <img src="~/Images/Icons/Footer/InstagramLogo.svg" alt="Instagram" />
+                    <img src="~/Images/Icons/Footer/YoutubeLogo.png" alt="Youtube" />
+                    <img src="~/Images/Icons/Footer/LinkedinLogo.svg" alt="Linkedin" />
+                </div>
             </div>
         </div>
-    </div>
 </footer>
