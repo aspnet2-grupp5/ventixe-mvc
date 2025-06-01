@@ -18,8 +18,9 @@ public class AuthService : IAuthService
     private readonly ServiceBusSender _sender;
     private readonly UserManager<AppUserEntity> _userManager;
     private readonly SignInManager<AppUserEntity> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IConfiguration configuration)
+    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
     {
         _http = http;
         _client = client;
@@ -28,11 +29,12 @@ public class AuthService : IAuthService
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _roleManager = roleManager;
     }
 
     public async Task<bool> AlreadyExistsAsync(string email)
     {
-        var result = await _userManager.Users.AnyAsync(x => x.Email == email);
+        var result = await _userManager.Users.AnyAsync(x => x.UserName == email);
 
         return result;
     }
