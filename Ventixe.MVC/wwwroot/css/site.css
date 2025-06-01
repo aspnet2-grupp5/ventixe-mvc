@@ -106,7 +106,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100dvh;
+    padding: 1rem;
 }
 
 .portal-wrapper {
