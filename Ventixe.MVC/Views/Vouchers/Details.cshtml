@@ -1,0 +1,19 @@
+﻿@model Ventixe.MVC.Models.Vouchers.VoucherModel
+
+<h2>Voucher Details</h2>
+
+<div class="card" style="max-width: 600px;">
+    <div class="card-body">
+        <p><strong>Voucher ID:</strong> @Model.Id</p>
+        <p><strong>Booking ID:</strong> @Model.BookingId</p>
+        <p><strong>Holder:</strong> @Model.HolderName</p>
+        <p><strong>Ticket Category:</strong> @Model.TicketCategory</p>
+        <p><strong>Seat:</strong> @Model.SeatNumber</p>
+        <p><strong>Gate:</strong> @Model.Gate</p>
+        <p><strong>Event Date:</strong> @Model.EventDate.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>Location:</strong> @Model.Location</p>
+        <p><strong>Barcode:</strong> <code>@Model.Barcode</code></p>
+    </div>
+</div>
+
+

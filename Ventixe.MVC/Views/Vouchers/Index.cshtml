@@ -1,0 +1,30 @@
+﻿@model List<Ventixe.MVC.Models.Vouchers.VoucherModel>
+
+<h2>Vouchers</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Barcode</th>
+            <th>Holder</th>
+            <th>Ticket Category</th>
+            <th>Used?</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var voucher in Model)
+        {
+            <tr>
+                <td>@voucher.Barcode</td>
+                <td>@voucher.HolderName</td>
+                <td>@voucher.TicketCategory</td>
+                <td>No</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@voucher.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
