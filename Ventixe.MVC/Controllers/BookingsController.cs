@@ -95,14 +95,21 @@ public class BookingsController : Controller
         if (!ModelState.IsValid)
             return View(dto);
 
+        var userId = User.FindFirst("sub")?.Value ?? User.FindFirst("nameid")?.Value;
+        if (userId == null)
+            return Unauthorized();
+
+        dto.UserId = userId;
+
         var response = await _httpClient.PostAsJsonAsync("/bookings", dto);
 
         if (response.IsSuccessStatusCode)
             return RedirectToAction(nameof(Index));
 
         ModelState.AddModelError(string.Empty, "Gick ej att skapa bokning");
-            return View(dto);
+        return View(dto);
     }
+
 
     [HttpGet("edit/{id}")]
     //[Authorize(Roles = "Admin")]
