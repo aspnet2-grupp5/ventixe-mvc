@@ -72,7 +72,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<bool> CreateAccountAsync(string email, string password)
+    public async Task<AuthResult<string>> CreateUserAsync(string email, string password)
     {
         try
         {
@@ -83,16 +83,19 @@ public class AuthService : IAuthService
             };
 
             var result = await _userManager.CreateAsync(user, password);
-            return result.Succeeded;
+            await _userManager.AddToRoleAsync(user, "Member");
+
+            return new AuthResult<string> { Succeeded = true, Message = "User created with role 'Member'.", Content = user.Id };
 
             //var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
 
             //return result.IsSuccessStatusCode;
         }
-        catch (HttpRequestException ex)
+
+        catch (Exception ex)
         {
-            _logger.LogError(ex, "HTTP request failed when creating account for email: {Email}", email);
-            return false;
+            _logger.LogError(ex, "Failed to create Identity user with email: {Email}", email);
+            return new AuthResult<string> { Succeeded = false, Message = $"Failed to create user: {ex.Message}" };
         }
     }
 

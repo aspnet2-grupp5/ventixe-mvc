@@ -9,5 +9,5 @@ public class AuthResult
 
 public class AuthResult<T> : AuthResult
 {
-    public T? Result { get; set; }
+    public T? Content { get; set; }
 }
