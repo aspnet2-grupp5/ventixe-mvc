@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Models;
@@ -101,6 +102,11 @@ public class AuthService : IAuthService
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent, false);
             return result.Succeeded;
+
+            //if (result.Succeeded)
+            //{
+            //    var token = await _httpClient.PostAsJsonAsync("/api/auth/token", payload);
+            //}
         }
         catch (Exception ex)
         {
