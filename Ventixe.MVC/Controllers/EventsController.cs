@@ -8,7 +8,7 @@ using Ventixe.MVC.Services;
 
 namespace Ventixe.MVC.Controllers
 {
-    public class EventController(
+    public class EventsController(
         IEventService eventService,
         CategoryProto.CategoryProtoClient categoryClient,
         LocationProto.LocationProtoClient locationClient,
@@ -21,15 +21,25 @@ namespace Ventixe.MVC.Controllers
         private readonly StatusProto.StatusProtoClient _statusClient = statusClient;
         private readonly IGrpcEventFactory _grpcEventFactory = grpcEventFactory;
 
-        public async Task<IActionResult> Index()
+
+        [Route("Events")]
+        public async Task<IActionResult> Index(string? status)
         {
             ViewData["Title"] = "Events";
+            ViewData["CurrentFilter"] = status; // För att markera vald filter i vyn
 
             var eventsResult = await _eventService.GetAllEventsAsync();
 
             var model = eventsResult.Events
                 .Select(e => _grpcEventFactory.ToEventViewModel(e))
                 .ToList();
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                model = model
+                    .Where(e => e.Status.Equals(status, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
             return View(model);
         }
@@ -75,7 +85,7 @@ namespace Ventixe.MVC.Controllers
                 return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         [HttpGet("Events/Edit/{id}")]

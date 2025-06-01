@@ -37,15 +37,15 @@ namespace Ventixe.MVC.Models
         public int SoldQuantity { get; set; } = 0;
 
         [Display(Name = "Category")]
-        public string CategoryName { get; set; } = null!;
+        //public string CategoryName { get; set; } = null!;
         public string? CategoryId { get; set; }
 
         [Display(Name = "Location")]
-        public string Location { get; set; } = null!;
+        //public string Location { get; set; } = null!;
         public string? LocationId { get; set; }
 
         [Display(Name = "Status")]
-        public string Status { get; set; } = null!;
+        //public string Status { get; set; } = null!;
         public string? StatusId { get; set; }
 
         // Dropdown-listor

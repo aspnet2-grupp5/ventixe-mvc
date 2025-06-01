@@ -13,7 +13,7 @@ public class InvoicesController : Controller
     {
         _httpClient = httpClientFactory.CreateClient("InvoiceApi");
     }
-
+    [Route("invoices/{id?}")]
     public async Task<IActionResult> Index(int? id, string? search)
     {
         var response = await _httpClient.GetAsync("api/invoices");

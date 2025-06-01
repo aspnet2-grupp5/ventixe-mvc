@@ -11,11 +11,6 @@
 else
 {
     <div class="event-page">
-        <div class="event-header">
-            <h1>@Model.EventTitle</h1>
-            <p>@Model.Description</p>
-        </div>
-
         <div class="event-body d-flex gap-4">
             <div class="event-image">
                 @if (!string.IsNullOrEmpty(Model.EventImage))
@@ -27,22 +22,50 @@ else
                     <p><em>No image available.</em></p>
                 }
             </div>
+        </div>
+
+        <div class="event-header">
+            <h1>@Model.EventTitle</h1>
+        </div>
 
             <div class="event-info">
-                <p><strong>Date:</strong> @Model.Date?.ToString("yyyy-MM-dd HH:mm")</p>
-                <p><strong>Price:</strong> @(Model.Price.HasValue ? $"{Model.Price.Value:0.00} kr" : "-")</p>
+                <p>Date @Model.Date?.ToString("yyyy-MM-dd HH:mm")</p>
+                  <p> Price @(Model.Price.HasValue ? $"{Model.Price.Value:0.00} kr" : "-")</p>
+
                 <p><strong>Available Seats:</strong> @(Model.Quantity.HasValue && Model.SoldQuantity.HasValue ? (Model.Quantity - Model.SoldQuantity).ToString() : "-")</p>
-                <p><strong>Category:</strong> @Model.Category ?? "-"</p>
-                <p><strong>Location:</strong> @Model.Location ?? "-"</p>
-                <p><strong>Status:</strong> @Model.Status ?? "-"</p>
+                <p><strong>Category:</strong> @(Model.Category ?? "-")</p>
+                <p><strong>Location:</strong> @(Model.Location ?? "-")</p>
+                <p><strong>Status:</strong> @(Model.Status ?? "-")</p>
+                <p><strong>About Event </strong></p>
+                <p>@Model.Description</p>
+
             </div>
-        </div>
+        
 
         <div class="event-actions mt-4">
             <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-warning">Edit</a>
-            <a asp-action="Create" asp-controller="Event" class="btn btn-success">Create New</a>
-            <a asp-action="Delete" asp-controller="Event" asp-route-id="@Model.EventId" class="btn btn-danger">Delete</a>
+            <a asp-action="Delete" asp-controller="Events" asp-route-id="@Model.EventId" class="btn btn-danger">Delete</a>
             <a asp-action="Index" class="btn btn-secondary">Back to event list</a>
         </div>
     </div>
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; 2023 Ventixe. All rights reserved.</p>
+                    <p>
+                        <a asp-action="Privacy" asp-controller="Home">Privacy Policy</a> |
+                        <a asp-action="Terms" asp-controller="Home">Terms of Service</a> |
+                        <a asp-action="Contact" asp-controller="Home">Contact Us</a>
+                    </p>
+                    <p>
+                        <img src="~/Images/Icons/Footer/FacebookLogo.svg" alt="Facebook" style="height: 32px; width: auto;" /> |
+                        <img src="~/Images/Icons/Footer/InstagramLogo.svg" alt="Instagram" style="height: 32px; width: auto;" /> |
+                        <img src="~/Images/Icons/Footer/YoutubeLogo.svg" alt="Youtube" style="height: 32px; width: auto;" /> |
+                        <img src="~/Images/Icons/Footer/LinkedinLogo.svg" alt="Linkedin" style="height: 32px; width: auto;" />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
 }
