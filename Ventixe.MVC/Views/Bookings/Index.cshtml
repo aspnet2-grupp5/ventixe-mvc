@@ -4,7 +4,7 @@
     <div class="main-content">
         <h1>Bookings</h1>
 
-        <!-- Statistikpanel -->
+        
         <div class="stats-panel">
             <div class="stat-card">
                 <h4>Total Bookings</h4>
@@ -42,7 +42,7 @@
             </div>
         </form>
 
-        <!-- Bokningslista -->
+        
         <table class="booking-table">
             <thead>
                 <tr>
@@ -76,7 +76,21 @@
                             <td>@booking.Quantity</td>
                             <td>$@(booking.Price* booking.Quantity)</td>
                             <td><span class="status-tag @booking.Status.ToString().ToLower()">@booking.Status</span></td>
-                            <td>@booking.EVoucher</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(booking.EVoucher))
+                                {
+                                    <a asp-controller="Vouchers"
+                                       asp-action="Details"
+                                       asp-route-id="@booking.EVoucher"
+                                       class="btn btn-link">
+                                        Visa voucher
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>No Voucher</span>
+                                }
+                            </td>
                         </tr>
                     }
                 }
@@ -92,7 +106,7 @@
             </tbody>
         </table>
 
-        <!-- Footer med paginering -->
+        
         <div class="booking-footer">
             <span>
                 Showing
