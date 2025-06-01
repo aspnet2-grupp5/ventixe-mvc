@@ -22,13 +22,15 @@ public class AuthController(IAuthService authService) : Controller
         if (!ModelState.IsValid)
             return View(nameof(SignUpEmail), model);
 
-        if (await _authService.AlreadyExistsAsync(model.Email))
+        var exists = await _authService.AlreadyExistsAsync(model.Email);
+        if (exists.Content)
         {
             ViewBag.ErrorMessage = "An account already exists.";
             return View(nameof(SignUpEmail), model);
         }
 
-        if (!await _authService.SendVerificationCodeRequestAsync(model.Email))
+        var result = await _authService.SendVerificationCodeRequestAsync(model.Email);
+        if (!result.Content)
         {
             ViewBag.ErrorMessage = "Unable to send verification code.";
             return View(nameof(SignUpEmail), model);
@@ -61,7 +63,8 @@ public class AuthController(IAuthService authService) : Controller
             return View(nameof(SignUpConfirmAccount), model);
         }
 
-        if (!await _authService.RequestCodeValidationAsync(model.Email, model.VerificationCode))
+        var result = await _authService.RequestCodeValidationAsync(model.Email, model.VerificationCode);
+        if (!result.Content)
         {
             ViewBag.ErrorMessage = "Invalid or expired verification code.";
             return View(nameof(SignUpConfirmAccount), model);
@@ -126,7 +129,8 @@ public class AuthController(IAuthService authService) : Controller
 
         if (ModelState.IsValid)
         {
-            if (await _authService.LoginAsync(model.Email, model.Password, model.IsPersistent))
+            var result = await _authService.LoginAsync(model.Email, model.Password, model.IsPersistent);
+            if (result.Content)
                 return LocalRedirect(returnUrl);
         }
 
