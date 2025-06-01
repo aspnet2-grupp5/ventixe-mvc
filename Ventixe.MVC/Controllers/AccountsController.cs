@@ -73,6 +73,27 @@ public class AccountsController : Controller
     }
 
     [HttpPost]
+    public async Task<IActionResult> EditAccountProfileDetails(string id, UpdateProfileViewModel model)
+    {
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var response = await _http.PutAsJsonAsync($"api/accounts/{id}", model);
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return NotFound();
+
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            ModelState.AddModelError("", "Invalid data. Please correct and submit again.");
+            return View(model);
+        }
+
+        response.EnsureSuccessStatusCode();
+
+        return RedirectToAction(nameof(AccountProfileDetails), new { id });
+    }
+
+    [HttpPost]
     public async Task<IActionResult> DeleteAccount(string id)
     {
         var response = await _http.DeleteAsync($"api/accounts/{id}");
