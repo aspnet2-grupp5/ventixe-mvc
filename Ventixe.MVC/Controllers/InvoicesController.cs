@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 using Ventixe.MVC.Models;
+using Ventixe.MVC.Models.Bookings;
 using Ventixe.MVC.Models.InvoiceModels;
 
 public class InvoicesController : Controller
@@ -13,7 +14,29 @@ public class InvoicesController : Controller
     {
         _httpClient = httpClientFactory.CreateClient("InvoiceApi");
     }
-    [Route("invoices/{id?}")]
+
+
+    private async Task<List<SelectListItem>> GetBookingsFromBookingApiAsync()
+    {
+        var bookingList = new List<SelectListItem>();
+
+        var response = await _httpClient.GetAsync("https://webapi-84578174132.europe-north2.run.app/api/bookings");
+        if (!response.IsSuccessStatusCode)
+            return bookingList;
+
+        var json = await response.Content.ReadAsStringAsync();
+
+        var bookings = JsonConvert.DeserializeObject<List<BookingsModel>>(json);
+
+        bookingList = bookings?.Select(b => new SelectListItem
+        {
+            Value = b.BookingId?.ToString(),
+            Text = b.EventName
+        }).ToList();
+
+        return bookingList;
+    }
+
     public async Task<IActionResult> Index(int? id, string? search)
     {
         var response = await _httpClient.GetAsync("api/invoices");
@@ -43,18 +66,12 @@ public class InvoicesController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        // Lite dummydata för test 
-        ViewBag.Bookings = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "1", Text = "Bröllop - Kund A" },
-            new SelectListItem { Value = "2", Text = "Företagsevent - Kund B" },
-            new SelectListItem { Value = "3", Text = "Sommarfest - Kund C" }
-        };
-
+        ViewBag.Bookings = await GetBookingsFromBookingApiAsync();
         return View();
     }
+
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateInvoiceDto dto)
@@ -77,12 +94,7 @@ public class InvoicesController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id)
     {
-        ViewBag.Bookings = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "1", Text = "Bröllop - Kund A" },
-            new SelectListItem { Value = "2", Text = "Företagsevent - Kund B" },
-            new SelectListItem { Value = "3", Text = "Sommarfest - Kund C" }
-        };
+        ViewBag.Bookings = await GetBookingsFromBookingApiAsync();
 
         var response = await _httpClient.GetAsync($"api/invoices/{id}");
         if (!response.IsSuccessStatusCode)
@@ -93,6 +105,7 @@ public class InvoicesController : Controller
 
         return View(invoice);
     }
+
 
     [HttpPost]
     public async Task<IActionResult> Edit(UpdateInvoiceDto dto)
