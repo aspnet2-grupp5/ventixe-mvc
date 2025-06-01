@@ -6,6 +6,7 @@ using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Services;
 using Ventixe.MVC.Protos;
+using Ventixe.Authentication.Data.Seeds;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -65,6 +66,9 @@ builder.Services.AddGrpcClient<StatusProto.StatusProtoClient>(o =>
 });
 
 var app = builder.Build();
+
+await SeedRoles.SetRolesAsync(app);
+
 app.UseHsts();
 app.UseHttpsRedirection();
 app.UseRouting();
