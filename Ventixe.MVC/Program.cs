@@ -1,12 +1,13 @@
 using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 using Ventixe.Authentication.Data.Contexts;
 using Ventixe.Authentication.Data.Entities;
-using Ventixe.Authentication.Services;
-using Ventixe.MVC.Services;
-using Ventixe.MVC.Protos;
 using Ventixe.Authentication.Data.Seeds;
+using Ventixe.Authentication.Services;
+using Ventixe.MVC.Protos;
+using Ventixe.MVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
@@ -18,6 +19,10 @@ builder.Services.AddHttpClient("InvoiceApi", client =>
 });
 
 
+builder.Services.AddHttpClient("AccountService", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["AccountService:BaseUri"]);
+});
 builder.Services.AddHttpClient();
 builder.Services.AddScoped(x => new ServiceBusClient(builder.Configuration.GetConnectionString("ServiceBusConnection")));
 builder.Services.AddDbContext<AuthenticationDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AuthSqlConnection")));
