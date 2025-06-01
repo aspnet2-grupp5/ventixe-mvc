@@ -86,10 +86,6 @@ public class AuthService : IAuthService
             await _userManager.AddToRoleAsync(user, "Member");
 
             return new AuthResult<string> { Succeeded = true, Message = "User created with role 'Member'.", Content = user.Id };
-
-            //var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
-
-            //return result.IsSuccessStatusCode;
         }
 
         catch (Exception ex)
