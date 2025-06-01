@@ -96,20 +96,18 @@ public class AuthController(IAuthService authService) : Controller
         var result = await _authService.CreateUserAsync(model.Email, model.Password);
         if (!result.Succeeded)
         {
-            ViewBag.ErrorMessage = "Unable to create new account.";
+            ViewBag.ErrorMessage = "Unable to create new user.";
             return View(nameof(SignUpPassword), model);
         }
 
         var newUserId = result.Content!;
         var email = model.Email;
 
-        //return RedirectToAction(
-        //    actionName: nameof(AccountsController.SetUserProfile),
-        //    controllerName: "Accounts",
-        //    routeValues: new { userId = newUserId,  email }
-        //);
-
-        return RedirectToAction(nameof(Login));
+        return RedirectToAction(
+            actionName: nameof(AccountsController.CreateAccount),
+            controllerName: "Accounts",
+            routeValues: new { userId = newUserId, email }
+        );
     }
 
     [HttpGet("auth/login")]
