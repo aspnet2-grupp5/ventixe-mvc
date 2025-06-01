@@ -21,12 +21,12 @@ namespace Ventixe.MVC.Controllers
         private readonly StatusProto.StatusProtoClient _statusClient = statusClient;
         private readonly IGrpcEventFactory _grpcEventFactory = grpcEventFactory;
 
-
         [Route("Events")]
+        [Authorize]
         public async Task<IActionResult> Index(string? status)
         {
             ViewData["Title"] = "Events";
-            ViewData["CurrentFilter"] = status; // För att markera vald filter i vyn
+            ViewData["CurrentFilter"] = status; 
 
             var eventsResult = await _eventService.GetAllEventsAsync();
 
@@ -45,6 +45,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Member, Admin")]
         public async Task<IActionResult> Details(string id)
         {
             var response = await _eventService.GetEventByIdAsync(id);
@@ -58,6 +59,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpGet("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var vm = new CreateEventViewModel();
@@ -66,6 +68,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateEventViewModel model)
         {
             if (!ModelState.IsValid)
@@ -89,6 +92,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpGet("Events/Edit/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -104,6 +108,7 @@ namespace Ventixe.MVC.Controllers
             return View(model);
         }
         [HttpPost("Events/Edit/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id, CreateEventViewModel model)
         {
             if (id != model.EventId)
@@ -133,6 +138,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpGet("Events/Delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
@@ -147,6 +153,7 @@ namespace Ventixe.MVC.Controllers
         }
 
         [HttpPost("Events/Delete/{id}")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {

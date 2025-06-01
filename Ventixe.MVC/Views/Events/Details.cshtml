@@ -45,6 +45,28 @@ else
         <div class="event-actions mt-4">
             <a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-warning">Edit</a>
             <a asp-action="Delete" asp-controller="Events" asp-route-id="@Model.EventId" class="btn btn-danger">Delete</a>
+            @if (Model.Quantity != Model.SoldQuantity)
+            {
+            <form asp-action="Create" asp-controller="Bookings" method="post">
+                <input type="hidden" asp-for="EventId"/>
+                <input type="hidden" asp-for="EventTitle" />
+                <input type="hidden" asp-for="Date" />
+                <input type="hidden" asp-for="Price"/>
+                <input type="hidden" asp-for="Location" />
+                <input type="hidden" asp-for="Category" />
+                <input type="hidden" asp-for="EventImage"/>
+                <input type="hidden" asp-for="Description"/>
+                <input type="hidden" asp-for="Quantity"/>
+                <input type="hidden" asp-for="SoldQuantity" />
+                <input type="hidden" asp-for="Status"/>
+
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+            }
+            else
+            {
+                <p class="text-danger">This event is fully booked.</p>
+            }
             <a asp-action="Index" class="btn btn-secondary">Back to event list</a>
         </div>
     </div>
