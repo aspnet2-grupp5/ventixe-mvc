@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Net.Http;
 using System.Net.Http.Json;
 using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Models;
@@ -33,46 +32,118 @@ public class AuthService : IAuthService
         _roleManager = roleManager;
     }
 
-    public async Task<bool> AlreadyExistsAsync(string email)
+    public async Task<AuthResult<bool>> AlreadyExistsAsync(string email)
     {
-        var result = await _userManager.Users.AnyAsync(x => x.UserName == email);
+        try
+        {
+            var exists = await _userManager.Users.AnyAsync(x => x.UserName == email);
 
-        return result;
+            return new AuthResult<bool>
+            {
+                Succeeded = true,
+                Message = exists 
+                    ? "User already exists." 
+                    : "User does not exist.",
+                Content = exists
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to check if user exists for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Error checking user existence: {ex.Message}.",
+                Content = false
+            };
+        }
     }
 
-    public async Task<bool> SendVerificationCodeRequestAsync(string email)
+    public async Task<AuthResult<bool>> SendVerificationCodeRequestAsync(string email)
     {
         try
         {
             var message = new ServiceBusMessage(email);
             await _sender.SendMessageAsync(message);
 
-            return true;
+            return new AuthResult<bool>
+            {
+                Succeeded = true,
+                Message = "Verification code request sent.",
+                Content = true
+            };
         }
         catch (ServiceBusException ex)
         {
-            _logger.LogError(ex, "Service Bus error when sending verification request message for email: {Email}", email);
-            return false;
+            _logger.LogError(ex, "Service Bus error when sending verification code request for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Service Bus error: {ex.Message}.",
+                Content = false
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error when sending verification code request for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Unexpected error: {ex.Message}.",
+                Content = false
+            };
         }
     }
 
-    public async Task<bool> RequestCodeValidationAsync(string email, string code)
+    public async Task<AuthResult<bool>> RequestCodeValidationAsync(string email, string code)
     {
         try
         {
             var validateCodeUrl = _configuration["VerificationServiceProvider:ValidateVerificationCode"];
-            var result = await _http.PostAsJsonAsync(validateCodeUrl, new { email, code });
+            var response = await _http.PostAsJsonAsync(validateCodeUrl, new { email, code });
 
-            return result.IsSuccessStatusCode;
+            if (response.IsSuccessStatusCode)
+            {
+                return new AuthResult<bool>
+                {
+                    Succeeded = true,
+                    Message = "Verification code validation succeeded.",
+                    Content = true
+                };
+            }
+            else
+            {
+                return new AuthResult<bool>
+                {
+                    Succeeded = false,
+                    Message = $"Verification code validation failed: {response.StatusCode}.",
+                    Content = false
+                };
+            }
         }
         catch (HttpRequestException ex)
         {
-            _logger.LogError(ex, "HTTP request failed during code validation for email: {Email}", email);
-            return false;
+            _logger.LogError(ex, "HTTP request failed during verification code validation for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"HTTP error: {ex.Message}.",
+                Content = false
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error during verification code validation for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Unexpected error: {ex.Message}.",
+                Content = false
+            };
         }
     }
 
-    public async Task<AuthResult<string>> CreateUserAsync(string email, string password)
+    public async Task<AuthResult<string>> CreateUserAsync(string email, string password, string roleName = "Member")
     {
         try
         {
@@ -82,45 +153,108 @@ public class AuthService : IAuthService
                 Email = email,
             };
 
-            var result = await _userManager.CreateAsync(user, password);
-            await _userManager.AddToRoleAsync(user, "Member");
+            var createResult = await _userManager.CreateAsync(user, password);
+            if (!createResult.Succeeded)
+            {
+                return new AuthResult<string>
+                {
+                    Succeeded = false,
+                    Message = "Could not create user.",
+                    Content = null
+                };
+            }
 
-            return new AuthResult<string> { Succeeded = true, Message = "User created with role 'Member'.", Content = user.Id };
+            var roleResult = await _userManager.AddToRoleAsync(user, roleName);
+            if (!roleResult.Succeeded) 
+            {
+                return new AuthResult<string> 
+                { 
+                    Succeeded = false, 
+                    Message = $"Could not add role: {roleName}.",
+                    Content = null
+                }; 
+            }
 
-            //var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
-
-            //return result.IsSuccessStatusCode;
+            return new AuthResult<string> 
+            { 
+                Succeeded = true, 
+                Message = $"User created with role: {roleName}.", 
+                Content = user.Id 
+            };
         }
-
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to create Identity user with email: {Email}", email);
-            return new AuthResult<string> { Succeeded = false, Message = $"Failed to create user: {ex.Message}" };
+            _logger.LogError(ex, "Failed to create Identity user with email: {Email}.", email);
+            return new AuthResult<string> 
+            { 
+                Succeeded = false, 
+                Message = $"Failed to create user: {ex.Message}.",
+                Content = null
+            };
         }
     }
 
-    public async Task<bool> LoginAsync(string email, string password, bool isPersistent)
+    public async Task<AuthResult<bool>> LoginAsync(string email, string password, bool isPersistent)
     {
         try
         {
             var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent, false);
-            return result.Succeeded;
+            if (result.Succeeded)
+            {
+                //if (result.Succeeded)
+                //{
+                //    var token = await _httpClient.PostAsJsonAsync("/api/auth/token", payload);
+                //}
 
-            //if (result.Succeeded)
-            //{
-            //    var token = await _httpClient.PostAsJsonAsync("/api/auth/token", payload);
-            //}
+                return new AuthResult<bool>
+                {
+                    Succeeded = true,
+                    Message = "Login successful.",
+                    Content = true
+                };
+            }
+            else
+            {
+                return new AuthResult<bool>
+                {
+                    Succeeded = false,
+                    Message = "Invalid login attempt.",
+                    Content = false
+                };
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Login request failed.");
-            return false;
+            _logger.LogError(ex, "Login request failed for email: {Email}.", email);
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Login error: {ex.Message}.",
+                Content = false
+            };
         }
     }
 
-    public async Task LogOutAsync()
+    public async Task<AuthResult> LogOutAsync()
     {
-        await _signInManager.SignOutAsync();
+        try
+        {
+            await _signInManager.SignOutAsync();
+            return new AuthResult
+            {
+                Succeeded = true,
+                Message = "Logout successful."
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Logout request failed.");
+            return new AuthResult<bool>
+            {
+                Succeeded = false,
+                Message = $"Logout error: {ex.Message}."
+            };
+        }
     }
 
 
