@@ -5,6 +5,7 @@ using Ventixe.MVC.Models.Accounts;
 
 namespace Ventixe.MVC.Controllers;
 
+[Route("accounts")]
 public class AccountsController : Controller
 {
     private readonly HttpClient _http;
@@ -14,7 +15,8 @@ public class AccountsController : Controller
         _http = httpFactory.CreateClient("BaseUri");
     }
 
-    [HttpGet]
+
+    [HttpGet("create-account")]
     public IActionResult CreateAccount(string id, string email)
     {
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(email))
@@ -29,8 +31,8 @@ public class AccountsController : Controller
         return View(model);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateAccount(CreateAccountViewModel model)
+    [HttpPost("create-account")]
+    public async Task<IActionResult> HandleCreateAccount(CreateAccountViewModel model)
     {
         if (!ModelState.IsValid)
             return View(nameof(CreateAccount), model);
@@ -40,13 +42,13 @@ public class AccountsController : Controller
         if (response.StatusCode == HttpStatusCode.Conflict)
         {
             ModelState.AddModelError("", "An account profile with this user already exists.");
-            return View(model);
+            return View(nameof(CreateAccount), model);
         }
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             ModelState.AddModelError("", "Invalid data. Please correct and submit again.");
-            return View(model);
+            return View(nameof(CreateAccount), model);
         }
 
         response.EnsureSuccessStatusCode();
@@ -63,8 +65,7 @@ public class AccountsController : Controller
             return NotFound();
 
         response.EnsureSuccessStatusCode();
-        var profile = await response.Content
-            .ReadFromJsonAsync<AccountProfileViewModel>();
+        var profile = await response.Content.ReadFromJsonAsync<AccountProfileViewModel>();
 
         if (profile == null)
             return NotFound();
@@ -72,11 +73,36 @@ public class AccountsController : Controller
         return View(profile);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> EditAccountProfileDetails(string id, UpdateProfileViewModel model)
+    [HttpGet("edit/{id}")]
+    public async Task<IActionResult> UpdateProfileDetails(string id)
+    {
+        var response = await _http.GetAsync($"api/accounts/{id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return NotFound();
+
+        response.EnsureSuccessStatusCode();
+        var profile = await response.Content.ReadFromJsonAsync<AccountProfileViewModel>();
+        if (profile == null)
+            return NotFound();
+
+        var model = new UpdateProfileViewModel
+        {
+            FirstName = profile.FirstName,
+            LastName = profile.LastName,
+            Phone = profile.Phone,
+            StreetName = profile.StreetName,
+            PostalCode = profile.PostalCode,
+            City = profile.City
+        };
+
+        return View(model);
+    }
+
+    [HttpPost("edit/{id}")]
+    public async Task<IActionResult> HandleUpdateProfileDetails(string id, UpdateProfileViewModel model)
     {
         if (!ModelState.IsValid)
-            return View(model);
+            return View(nameof(UpdateProfileDetails), model);
 
         var response = await _http.PutAsJsonAsync($"api/accounts/{id}", model);
         if (response.StatusCode == HttpStatusCode.NotFound)
@@ -85,7 +111,7 @@ public class AccountsController : Controller
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             ModelState.AddModelError("", "Invalid data. Please correct and submit again.");
-            return View(model);
+            return View(nameof(UpdateProfileDetails), model);
         }
 
         response.EnsureSuccessStatusCode();
@@ -93,7 +119,7 @@ public class AccountsController : Controller
         return RedirectToAction(nameof(AccountProfileDetails), new { id });
     }
 
-    [HttpPost]
+    [HttpPost("delete/{id}")]
     public async Task<IActionResult> DeleteAccount(string id)
     {
         var response = await _http.DeleteAsync($"api/accounts/{id}");
