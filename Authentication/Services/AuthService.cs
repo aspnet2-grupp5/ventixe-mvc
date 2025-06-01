@@ -72,7 +72,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<AuthResult<string>> CreateUserAsync(string email, string password)
+    public async Task<AuthResult<string>> CreateUserAsync(string email, string password, string roleName = "Member")
     {
         try
         {
@@ -82,10 +82,15 @@ public class AuthService : IAuthService
                 Email = email,
             };
 
-            var result = await _userManager.CreateAsync(user, password);
-            await _userManager.AddToRoleAsync(user, "Member");
+            var createResult = await _userManager.CreateAsync(user, password);
+            if (!createResult.Succeeded)
+                return new AuthResult<string> { Succeeded = false, Message = "Could not create user." };
 
-            return new AuthResult<string> { Succeeded = true, Message = "User created with role 'Member'.", Content = user.Id };
+            var roleResult = await _userManager.AddToRoleAsync(user, roleName);
+            if (!roleResult.Succeeded)
+                return new AuthResult<string> { Succeeded = false, Message = $"Could not add role '{roleName}'." };
+
+            return new AuthResult<string> { Succeeded = true, Message = $"User created with role {roleName}.", Content = user.Id };
         }
 
         catch (Exception ex)

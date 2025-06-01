@@ -7,7 +7,7 @@ namespace Ventixe.Authentication.Services
     public interface IAuthService
     {
         Task<bool> AlreadyExistsAsync(string email);
-        Task<AuthResult<string>> CreateUserAsync(string email, string password);
+        Task<AuthResult<string>> CreateUserAsync(string email, string password, string roleName = "Member");
         Task<IdentityResult> DeleteUserAsync(string email);
         Task<bool> LoginAsync(string email, string password, bool isPersistent);
         Task LogOutAsync();
