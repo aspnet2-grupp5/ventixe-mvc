@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net.Http;
 using System.Net.Http.Json;
 using Ventixe.Authentication.Data.Entities;
 using Ventixe.Authentication.Models;
@@ -18,8 +19,9 @@ public class AuthService : IAuthService
     private readonly ServiceBusSender _sender;
     private readonly UserManager<AppUserEntity> _userManager;
     private readonly SignInManager<AppUserEntity> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IConfiguration configuration)
+    public AuthService(HttpClient http, ServiceBusClient client, ILogger<AuthService> logger, UserManager<AppUserEntity> userManager, SignInManager<AppUserEntity> signInManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
     {
         _http = http;
         _client = client;
@@ -28,25 +30,15 @@ public class AuthService : IAuthService
         _userManager = userManager;
         _signInManager = signInManager;
         _configuration = configuration;
+        _roleManager = roleManager;
     }
 
     public async Task<bool> AlreadyExistsAsync(string email)
     {
-        var result = await _userManager.Users.AnyAsync(x => x.Email == email);
+        var result = await _userManager.Users.AnyAsync(x => x.UserName == email);
 
         return result;
     }
-
-    // temporär metod
-    public async Task<IdentityResult> DeleteUserAsync(string email)
-    {
-        var user = await _userManager.FindByEmailAsync(email);
-        if (user == null)
-            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
-
-        return await _userManager.DeleteAsync(user);
-    }
-
 
     public async Task<bool> SendVerificationCodeRequestAsync(string email)
     {
@@ -80,7 +72,7 @@ public class AuthService : IAuthService
         }
     }
 
-    public async Task<bool> CreateAccountAsync(string email, string password)
+    public async Task<AuthResult<string>> CreateUserAsync(string email, string password)
     {
         try
         {
@@ -91,30 +83,54 @@ public class AuthService : IAuthService
             };
 
             var result = await _userManager.CreateAsync(user, password);
-            return result.Succeeded;
+            await _userManager.AddToRoleAsync(user, "Member");
+
+            return new AuthResult<string> { Succeeded = true, Message = "User created with role 'Member'.", Content = user.Id };
 
             //var result = await _http.PostAsJsonAsync("https://domain.com/accountservice/api/users/create", new { email, password });
 
             //return result.IsSuccessStatusCode;
         }
-        catch (HttpRequestException ex)
+
+        catch (Exception ex)
         {
-            _logger.LogError(ex, "HTTP request failed when creating account for email: {Email}", email);
-            return false;
+            _logger.LogError(ex, "Failed to create Identity user with email: {Email}", email);
+            return new AuthResult<string> { Succeeded = false, Message = $"Failed to create user: {ex.Message}" };
         }
     }
 
-    public async Task<bool> LoginAsync(string email, string password)
+    public async Task<bool> LoginAsync(string email, string password, bool isPersistent)
     {
         try
         {
-            var result = await _signInManager.PasswordSignInAsync(email, password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent, false);
             return result.Succeeded;
+
+            //if (result.Succeeded)
+            //{
+            //    var token = await _httpClient.PostAsJsonAsync("/api/auth/token", payload);
+            //}
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Login request failed.");
             return false;
         }
+    }
+
+    public async Task LogOutAsync()
+    {
+        await _signInManager.SignOutAsync();
+    }
+
+
+    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
+    public async Task<IdentityResult> DeleteUserAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return IdentityResult.Failed(new IdentityError { Description = "User not found." });
+
+        return await _userManager.DeleteAsync(user);
     }
 }

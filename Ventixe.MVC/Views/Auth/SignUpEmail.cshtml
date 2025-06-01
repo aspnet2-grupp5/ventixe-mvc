@@ -1,20 +1,39 @@
 ﻿@model SignUpEmailViewModel
 
-<div>
-    <h3>Sign up</h3>
-</div>
+@{
+    ViewData["Title"] = "Create account";
+}
 
 <form asp-controller="Auth" asp-action="HandleSignUpEmail" method="post" novalidate>
-    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
-    {
-        <div class="form-errormessage">
-            @ViewBag.ErrorMessage
+
+    <div class="card auth-card">
+
+        <div class="card-header auth-title">
+            <h2>@ViewData["Title"]</h2>
         </div>
-    }
-    <div class="form-group">
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+
+        <div class="auth-card-body card-body">
+
+            @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
+            {
+                <div class="form-errormessage">
+                    @ViewBag?.ErrorMessage
+                </div>
+            }
+
+            <div class="form-group">
+                <input class="form-input" asp-for="Email" />
+                <span class="auth-validation" asp-validation-for="Email"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Continue</button>
+
+        </div>
+
+        <div class="card-footer additional-info center">
+            <span>Already have an account?</span>
+            <a asp-controller="Auth" asp-action="Login">Sign in</a>
+        </div>
+
     </div>
-    <button type="submit" class="btn btn-primary">Continue</button>
 </form>
-<div class="additional-info"><p>Already have an account? <a asp-controller="Auth" asp-action="Login">Sign in</a></p></div>

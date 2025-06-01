@@ -1,28 +1,38 @@
-﻿@{
-}
-<div class="sidebar">
+﻿
+
+
     <div class="logotype-container">
         <a class="logotype" href="@Url.Content("~/")">
             <img src="~/Images/Logo/Ventixe_logo.svg" alt="Ventixe Logo" style="height: 32px; width: auto;" />
             <span>Ventixe</span>
         </a>
     </div>
+
     <nav class="nav-links">
         <a class="nav-link @(Context.Request.Path == "/" ? "active" : "")" asp-controller="Home" asp-action="Index">
-            <img src="~/images/Icons/Nav/Dashboard.svg" alt="Dashboard" />
+            <img src="~/images/Icons/Sidebar/Dashboard.svg" alt="Dashboard" />
             <span>Dashboard</span>
         </a>
         <a class="nav-link @(Context.Request.Path == "/bookings" ? "active" : "")" asp-controller="Bookings" asp-action="Index">
-            <img src="~/images/Icons/Nav/CheckSquare.svg" alt="Bookings" />
+            <img src="~/images/Icons/Sidebar/CheckSquare.svg" alt="Bookings" />
             <span>Bookings</span>
         </a>
         <a class="nav-link @(Context.Request.Path == "/invoices" ? "active" : "")" asp-controller="Invoices" asp-action="Index">
-            <img src="~/images/Icons/Nav/Invoice.svg" alt="Invoices" />
+            <img src="~/images/Icons/Sidebar/Invoice.svg" alt="Invoices" />
             <span>Invoices</span>
         </a>
         <a class="nav-link @(Context.Request.Path == "/events" ? "active" : "")" asp-controller="Events" asp-action="Index">
-            <img src="~/images/Icons/Nav/Ticket.svg" alt="Events" />
+            <img src="~/images/Icons/Sidebar/Ticket.svg" alt="Events" />
             <span>Events</span>
         </a>
     </nav>
-</div>
+
+    <div class="sidebar-footer">
+    <form asp-controller="Auth" asp-action="LogOut" method="post" novalidate>
+            <button type="submit" class="btn btn-signout">
+                <img src="~/images/icons/sidebar/sign-out.svg" alt="Sign Out" />
+                Sign Out
+            </button>
+        </form>
+    </div>
+

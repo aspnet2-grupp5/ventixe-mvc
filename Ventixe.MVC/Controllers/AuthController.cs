@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Ventixe.Authentication.Services;
 using Ventixe.MVC.Models.Authentication;
 using Ventixe.MVC.Models.Authentication.SignUp;
@@ -40,8 +41,8 @@ public class AuthController(IAuthService authService) : Controller
     [HttpGet("auth/confirm-account")]
     public IActionResult SignUpConfirmAccount()
     {
-        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
-            return RedirectToAction(nameof(SignUpEmail));
+        //if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
+        //    return RedirectToAction(nameof(SignUpEmail));
 
         return View();
     }
@@ -72,8 +73,8 @@ public class AuthController(IAuthService authService) : Controller
     [HttpGet("auth/password")]
     public IActionResult SignUpPassword()
     {
-        if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
-            return RedirectToAction(nameof(SignUpEmail));
+        //if (string.IsNullOrWhiteSpace(TempData["Email"]?.ToString()))
+        //    return RedirectToAction(nameof(SignUpEmail));
 
         return View();
     }
@@ -89,11 +90,21 @@ public class AuthController(IAuthService authService) : Controller
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
 
-        if (!await _authService.CreateAccountAsync(model.Email, model.Password))
+        var result = await _authService.CreateUserAsync(model.Email, model.Password);
+        if (!result.Succeeded)
         {
             ViewBag.ErrorMessage = "Unable to create new account.";
             return View(nameof(SignUpPassword), model);
         }
+
+        var newUserId = result.Content!;
+        var email = model.Email;
+
+        //return RedirectToAction(
+        //    actionName: nameof(AccountsController.SetUserProfile),
+        //    controllerName: "Accounts",
+        //    routeValues: new { userId = newUserId,  email }
+        //);
 
         return RedirectToAction(nameof(Login));
     }
@@ -115,8 +126,7 @@ public class AuthController(IAuthService authService) : Controller
 
         if (ModelState.IsValid)
         {
-            var result = await _authService.LoginAsync(model.Email, model.Password);
-            if (result)
+            if (await _authService.LoginAsync(model.Email, model.Password, model.IsPersistent))
                 return LocalRedirect(returnUrl);
         }
 
@@ -124,14 +134,20 @@ public class AuthController(IAuthService authService) : Controller
         return View(model);
     }
 
-    // temporär http-request
+    public async Task<IActionResult> LogOut()
+    {
+        await _authService.LogOutAsync();
+        return LocalRedirect("/");
+    }
+
+    #region Delete User
+    // Endast för att enkelt och säkert ta bort en IdentityUser från databasen
     [HttpGet("auth/delete-user")]
     public IActionResult DeleteUser()
     {
         return View(new DeleteUserViewModel());
     }
 
-    // temporär http-request
     [HttpPost("auth/delete-user")]
     public async Task<IActionResult> DeleteUser(DeleteUserViewModel model)
     {
@@ -146,5 +162,5 @@ public class AuthController(IAuthService authService) : Controller
             ModelState.AddModelError(string.Empty, err.Description);
         return View(model);
     }
-
+    #endregion
 }
