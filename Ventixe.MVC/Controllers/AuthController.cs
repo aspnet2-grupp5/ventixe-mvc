@@ -100,12 +100,13 @@ public class AuthController(IAuthService authService) : Controller
         var newUserId = result.Content!;
         var email = model.Email;
 
-        return RedirectToAction(
-            actionName: nameof(AccountsController.SetUserProfile),
-            controllerName: "Accounts",
-            routeValues: new { userId = newUserId, email }
-        );
+        //return RedirectToAction(
+        //    actionName: nameof(AccountsController.SetUserProfile),
+        //    controllerName: "Accounts",
+        //    routeValues: new { userId = newUserId,  email }
+        //);
 
+        return RedirectToAction(nameof(Login));
     }
 
     [HttpGet("auth/login")]
