@@ -53,4 +53,21 @@ public class AccountsController : Controller
 
         return RedirectToAction(nameof(AuthController.Login),"Auth");
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> AccountProfileDetails(string id)
+    {
+        var response = await _http.GetAsync($"api/accounts/{id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return NotFound();
+
+        response.EnsureSuccessStatusCode();
+        var profile = await response.Content
+            .ReadFromJsonAsync<AccountProfileViewModel>();
+
+        if (profile == null)
+            return NotFound();
+
+        return View(profile);
+    }
 }
