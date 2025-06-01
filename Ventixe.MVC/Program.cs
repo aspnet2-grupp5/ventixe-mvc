@@ -67,7 +67,7 @@ builder.Services.AddGrpcClient<StatusProto.StatusProtoClient>(o =>
 
 var app = builder.Build();
 
-await SeedRoles.SetRolesAsync(app);
+//await SeedRoles.SetRolesAsync(app);
 
 app.UseHsts();
 app.UseHttpsRedirection();
