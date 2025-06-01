@@ -54,6 +54,7 @@ public class AccountsController : Controller
         return RedirectToAction(nameof(AuthController.Login),"Auth");
     }
 
+
     [HttpGet("{id}")]
     public async Task<IActionResult> AccountProfileDetails(string id)
     {
@@ -69,5 +70,17 @@ public class AccountsController : Controller
             return NotFound();
 
         return View(profile);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> DeleteAccount(string id)
+    {
+        var response = await _http.DeleteAsync($"api/accounts/{id}");
+        if (response.StatusCode == HttpStatusCode.NotFound)
+            return NotFound();
+
+        response.EnsureSuccessStatusCode();
+
+        return RedirectToAction("Index", "Home");
     }
 }
