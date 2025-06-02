@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using System.Security.Claims;
 using Ventixe.MVC.Models.Accounts;
 
 namespace Ventixe.MVC.Controllers;
