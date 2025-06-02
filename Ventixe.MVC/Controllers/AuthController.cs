@@ -87,8 +87,6 @@ public class AuthController(IAuthService authService) : Controller
         if (string.IsNullOrWhiteSpace(model.Email))
             return RedirectToAction(nameof(SignUpEmail));
 
-        TempData["Email"] = model.Email;
-
         if (!ModelState.IsValid)
             return View(nameof(SignUpPassword), model);
 
@@ -99,14 +97,9 @@ public class AuthController(IAuthService authService) : Controller
             return View(nameof(SignUpPassword), model);
         }
 
-        var newUserId = result.Content!;
-        var email = model.Email;
-
-        return RedirectToAction(
-            actionName: nameof(AccountsController.CreateAccount),
-            controllerName: "Accounts",
-            routeValues: new { userId = newUserId, email }
-        );
+        TempData["UserId"] = result.Content!;
+        TempData["Email"] = model.Email;
+        return RedirectToAction(nameof(AccountsController.CreateAccount), "Accounts");
     }
 
     [HttpGet("auth/login")]
