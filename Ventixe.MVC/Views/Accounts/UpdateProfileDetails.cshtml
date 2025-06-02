@@ -1,0 +1,59 @@
+﻿@model UpdateProfileViewModel
+
+@{
+    Layout = "_AuthenticationLayout";
+    ViewData["Title"] = "Update Profile Details";
+}
+
+<form asp-controller="Accounts" asp-action="HandleUpdateProfileDetails" method="post" novalidate>
+
+    <div class="card auth-card">
+
+        <div class="card-header auth-title">
+            <h2>@ViewData["Title"]</h2>
+
+            <p class="auth-info">
+                Update your contact information.
+            </p>
+        </div>
+
+        <div class="auth-card-body card-body">
+
+            @if (!string.IsNullOrEmpty(ViewBag?.ErrorMessage))
+            {
+                <div class="form-errormessage">
+                    @ViewBag?.ErrorMessage
+                </div>
+            }
+
+            <div class="form-group">
+                <input class="form-input" asp-for="FirstName" />
+                <span class="auth-validation" asp-validation-for="FirstName"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-input" asp-for="LastName" />
+                <span class="auth-validation" asp-validation-for="LastName"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-input" asp-for="Phone" />
+                <span class="auth-validation" asp-validation-for="Phone"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-input" asp-for="StreetName" />
+                <span class="auth-validation" asp-validation-for="StreetName"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-input" asp-for="PostalCode" />
+                <span class="auth-validation" asp-validation-for="PostalCode"></span>
+            </div>
+            <div class="form-group">
+                <input class="form-input" asp-for="City" />
+                <span class="auth-validation" asp-validation-for="City"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Finish</button>
+
+        </div>
+
+    </div>
+</form>
