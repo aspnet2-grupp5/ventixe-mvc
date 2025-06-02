@@ -1,13 +1,11 @@
-﻿@model CreateAccountViewModel
+﻿@model UpdateProfileViewModel
 
 @{
     Layout = "_AuthenticationLayout";
-    ViewData["Title"] = "Create Account Profile";
+    ViewData["Title"] = "Update Profile Details";
 }
 
-<form asp-controller="Accounts" asp-action="HandleCreateAccount" method="post" novalidate>
-    <input type="hidden" asp-for="UserId" value="@Model.UserId" />
-    <input type="hidden" asp-for="Email" value="@Model.Email" />
+<form asp-controller="Accounts" asp-action="HandleUpdateProfileDetails" method="post" novalidate>
 
     <div class="card auth-card">
 
@@ -15,7 +13,7 @@
             <h2>@ViewData["Title"]</h2>
 
             <p class="auth-info">
-                Enter your contact information to finish the signup process.
+                Update your contact information.
             </p>
         </div>
 
