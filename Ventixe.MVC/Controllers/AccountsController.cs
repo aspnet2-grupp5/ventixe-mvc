@@ -11,7 +11,7 @@ public class AccountsController : Controller
 
     public AccountsController(IHttpClientFactory httpFactory)
     {
-        _http = httpFactory.CreateClient("BaseUri");
+        _http = httpFactory.CreateClient("AccountService");
     }
 
 
