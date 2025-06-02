@@ -16,14 +16,18 @@ public class AccountsController : Controller
 
 
     [HttpGet("create-account")]
-    public IActionResult CreateAccount(string id, string email)
+    public IActionResult CreateAccount()
     {
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(email))
-            return BadRequest();
+        var userId = TempData.Peek("UserId")?.ToString();
+        var email = TempData.Peek("Email")?.ToString();
+
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email))
+            return RedirectToAction(nameof(AuthController.Login), "Auth");
+
 
         var model = new CreateAccountViewModel
         {
-            UserId = id,
+            UserId = userId,
             Email = email
         };
 
